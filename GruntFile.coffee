@@ -9,24 +9,16 @@ module.exports = ( grunt ) ->
             lib:
                 src: [ "lib" ]
 
-        browserify:
-            dist:
-                files:
-                    "lib/locale.js": "src/index.coffee"
+        coffee:
+            default:
+                files: [
+                  expand: true         # Enable dynamic expansion.
+                  cwd: 'src/'          # Src matches are relative to this path.
+                  src: ['**/*.coffee'] # Actual pattern(s) to match.
+                  dest: 'lib/'         # Destination path prefix.
+                  ext: '.js'           # Dest filepaths will have this extension.
+                ]
 
-                options:
-                    transform:  [ "coffeeify" ]
-                    standalone: "locale"
-
-
-            debug:
-                files:
-                    "lib/locale.js": "src/index.coffee"
-
-                options:
-                    debug:     true
-                    transform:  [ "coffeeify" ]
-                    standalone: "locale"
 
         mochaTest:
             test:
@@ -37,10 +29,8 @@ module.exports = ( grunt ) ->
 
     # These plug-ins provide the necessary tasks
     #
-    grunt.loadNpmTasks "grunt-browserify"
+    grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks "grunt-contrib-clean"
-    grunt.loadNpmTasks "grunt-contrib-copy"
-    grunt.loadNpmTasks "grunt-contrib-uglify"
     grunt.loadNpmTasks "grunt-mocha-test"
 
     # Default tasks
@@ -48,14 +38,14 @@ module.exports = ( grunt ) ->
     grunt.registerTask "default",
     [
         "clean:lib"
-        "browserify:dist"
+        "coffee"
         "mochaTest"
     ]
 
     grunt.registerTask "debug",
     [
         "clean:lib"
-        "browserify:debug"
+        "coffee"
         "mochaTest"
     ]
 

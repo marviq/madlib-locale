@@ -6,6 +6,7 @@
             require "madlib-settings"
             require "madlib-object-utils"
             require "madlib-xhr"
+            require "hbsfy/runtime"
             require "node-polyglot"
             require "moment"
             require "accounting"
@@ -17,12 +18,13 @@
             "madlib-settings"
             "madlib-object-utils"
             "madlib-xhr"
+            "hbsfy/runtime"
             "node-polyglot"
             "moment"
             "accounting"
         ], factory )
 
-)( ( Q, console, settings, objectUtils, XHR, Polyglot, Moment, accounting ) ->
+)( ( Q, console, settings, objectUtils, XHR, Handlebars, Polyglot, Moment, accounting ) ->
     ###*
     #   This module is used to handle translations, formatting and locale settings
     #
@@ -37,7 +39,7 @@
         initialized:    false 
         localeLocation:  "./i18n"
 
-        initialize: ( Handlebars, locale, localeLocation ) ->
+        initialize: ( locale, localeLocation ) ->
 
             if @initialized is false
 
