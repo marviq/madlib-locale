@@ -1,0 +1,40 @@
+{
+    "name":                             "en_GB"
+,   "phrases":
+    {
+        "keyInTemplate":                "Value"
+    }
+,   "formatting":
+    {
+        "number":
+        {
+            "decimalMarker":        "."
+        ,   "thousandMarker":       ","
+        ,   "precision":            3
+        }
+    ,   "datetime":
+        {
+            "date":                 "MM-DD-YYYY"
+        ,   "datetime":             "MM-DD-YYYY HH:mm"
+        }
+    ,   "money":
+        {
+            "default":              "pound_GB"
+        ,   "euro":
+            {
+                "sign":             "\u20AC"
+            ,   "precision":        2
+            }
+        ,   "dollar_US":
+            {
+                "sign":             "$"
+            ,   "precision":        2
+            }
+        ,   "pound_GB":
+            {
+                "sign":             "\u00A3"
+            ,   "precision":        2
+            }
+        }
+    }
+}
