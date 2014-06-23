@@ -26,7 +26,7 @@ module.exports = ( grunt ) ->
                 options:
                     debug:     true
                     transform:  [ "coffeeify" ]
-                    standalone: "analytics"
+                    standalone: "locale"
 
         mochaTest:
             test:
