@@ -52,7 +52,7 @@ localeManager.setLocale( Handlebars, "en_GB" ).then(
 
 ```
 
-## Get the current lanauage name
+## Get the current language name
 
 To retrieve the current language name:
 
