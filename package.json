@@ -1,0 +1,50 @@
+{
+  "name": "mad-locale",
+  "description": "Locale manager to handle translations of handlebar templates",
+  "main": "lib/locale.js",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://stash.marviq.com/scm/ess_svc/essent-analytics.git"
+  },
+  "author": {
+    "name": "Raymond de Wit",
+    "email": "raymond.de.wit@marviq.com",
+    "url": "https://www.marviq.com"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "command -v grunt >/dev/null 2>&1 && grunt || { echo >&2 'Grunt is not installed'; }"
+  },
+  "devDependencies": {
+    "grunt-cli": "~0.1.11",
+    "browserify": "~3.23.1",
+    "grunt": "~0.4.1",
+    "grunt-browserify": "~1.3.0",
+    "coffeeify": "~0.5.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-compress": "~0.5.3",
+    "grunt-contrib-uglify": "~0.3.1",
+    "grunt-mocha-test": "~0.8.2",
+    "chai": "~1.8.1",
+    "coffee-script": "~1.6.3"
+  },
+  "dependencies": {
+    "accounting": "^0.3.2",
+    "handlebars": "^1.3.0",
+    "hbsfy": "^1.3.2",
+    "madlib-console": "^0.1.4",
+    "madlib-object-utils": "^0.1.5",
+    "madlib-settings": "^0.1.6",
+    "madlib-xhr": "^0.1.12",
+    "moment": "^2.7.0",
+    "node-polyglot": "^0.4.0",
+    "q": "^1.0.1"
+  },
+  "licenses": [
+    {
+      "type": "BSD"
+    }
+  ]
+}
