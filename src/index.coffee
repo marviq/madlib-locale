@@ -130,6 +130,9 @@
             else 
                 console.error( "[LocaleManager] Tried to set locale before initializing" )
 
+        getLocaleName: () ->
+            return @locale.name
+
         translate: ( key, interpolation ) ->
             @polyglot.t( key, interpolation )
 
