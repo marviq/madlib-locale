@@ -10,7 +10,6 @@
             require "node-polyglot"
             require "moment"
             require "accounting"
-            require "./nl_NL.json"
         )
     else if typeof define is "function" and define.amd
         define( [
@@ -23,10 +22,9 @@
             "node-polyglot"
             "moment"
             "accounting"
-            "./nl_NL.json"
         ], factory )
 
-)( ( Q, console, settings, objectUtils, XHR, Handlebars, Polyglot, Moment, accounting, defaultLocale ) ->
+)( ( Q, console, settings, objectUtils, XHR, Handlebars, Polyglot, Moment, accounting ) ->
     ###*
     #   This module is used to handle translations, formatting and locale settings
     #
@@ -39,81 +37,100 @@
         locale:         undefined
         cache:          {}
         initialized:    false 
-        localLocation:  "./i18n"
+        localeLocation:  "./i18n"
 
-        initialized: ( locale, localeLocation ) ->
+        initialize: ( locale, localeLocation ) ->
 
-            # Create our polyglot instance
-            # and load the default phrases
-            #
-            @polyglot = new Polyglot(
-                locale:     objectUtils.getValue( "name",    @locale, "??" )
-                phrases:    objectUtils.getValue( "phrases", @locale, {}   )
-            )
+            if @initialized is false
 
-            # Register the handlebars helper(s)
-            #
-            Handlebars.registerHelper( "_translate", ( key, interpolation = {} ) =>
-                @translate( key, interpolation )
-            )
+                @initialized = true
 
-            Handlebars.registerHelper( "_date", ( type, date ) =>
-                @date( type, date )
-            )
+                # Set location if given
+                #
+                @localeLocation = localeLocation if localeLocation?
 
-            Handlebars.registerHelper( "_money", ( currency, amount ) =>
-                @money( currency, amount )
-            )
+                # Create our polyglot instance
+                # and load the default phrases
+                #
+                @polyglot = new Polyglot(
+                    locale:     objectUtils.getValue( "name",    @locale, "??" )
+                    phrases:    objectUtils.getValue( "phrases", @locale, {}   )
+                )
 
-            Handlebars.registerHelper( "_number", ( number ) =>
-                @number( number )
-            )
+                # Register the handlebars helper(s)
+                #
+                Handlebars.registerHelper( "_translate", ( key, interpolation = {} ) =>
+                    @translate( key, interpolation )
+                )
 
-            # Add the default locale to the cache
-            #
-            @cache[ @locale.name ] = @locale
+                Handlebars.registerHelper( "_date", ( type, date ) =>
+                    @date( type, date )
+                )
+
+                Handlebars.registerHelper( "_money", ( currency, amount ) =>
+                    @money( currency, amount )
+                )
+
+                Handlebars.registerHelper( "_number", ( number ) =>
+                    @number( number )
+                )
+
+                # Set the default locale and return promise
+                #
+                return @setLocale( locale )
+
+            else 
+                console.error( "[LocaleManager] Already initialized" )
+
+                return Q.reject( "[LocaleManager] Already initialized" )
 
         setLocale: ( locale ) ->
-            deferred = Q.defer()
 
-            # Check if the locale is in the cache
-            #
-            if @cache[ locale ]?
-                @locale = @cache[ locale ]
-                @polyglot.locale(  objectUtils.getValue( "name",    @locale, "??" ) )
-                @polyglot.replace( objectUtils.getValue( "phrases", @locale, {}   ) )
+            if @initialized is true 
 
-                deferred.resolve()
-            else
-                # Load the new locale phrases
+                deferred = Q.defer()
+
+                # Check if the locale is in the cache
                 #
-                xhr = new XHR( settings )
-                xhr.call(
-                    url:    "./#{@localLocation}/#{locale}.json"
-                    type:   "json"
-                    method: "GET"
-                )
-                .then( ( data ) =>
-                    # Set polyglot locale and phrases on success
-                    #
-                    @locale = data.response
-
+                if @cache[ locale ]?
+                    @locale = @cache[ locale ]
                     @polyglot.locale(  objectUtils.getValue( "name",    @locale, "??" ) )
                     @polyglot.replace( objectUtils.getValue( "phrases", @locale, {}   ) )
 
-                    # Add the default locale to the cache
-                    #
-                    @cache[ @locale.name ] = @locale
-
                     deferred.resolve()
+                else
+                    # Load the new locale phrases
+                    #
+                    xhr = new XHR( settings )
+                    xhr.call(
+                        url:    "./#{@localeLocation}/#{locale}.json"
+                        type:   "json"
+                        method: "GET"
+                    )
+                    .then( ( data ) =>
+                        # Set polyglot locale and phrases on success
+                        #
+                        @locale = data.response
 
-                ,   ( error ) =>
-                    console.error( "[i18n] Failed to load locale #{locale}")
-                    deferred.reject( error )
-                )
-                .done()
+                        @polyglot.locale(  objectUtils.getValue( "name",    @locale, "??" ) )
+                        @polyglot.replace( objectUtils.getValue( "phrases", @locale, {}   ) )
 
-            return deferred.promise
+                        # Add the default locale to the cache
+                        #
+                        @cache[ @locale.name ] = @locale
+
+                        deferred.resolve()
+
+                    ,   ( error ) =>
+                        console.error( "[i18n] Failed to load locale #{locale}")
+                        deferred.reject( error )
+                    )
+                    .done()
+
+                return deferred.promise
+            
+            else 
+                console.error( "[LocaleManager] Tried to set locale before initializing" )
 
         translate: ( key, interpolation ) ->
             @polyglot.t( key, interpolation )

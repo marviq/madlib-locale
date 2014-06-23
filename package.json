@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://stash.marviq.com/scm/ess_svc/essent-analytics.git"
+    "url": "https://github.com/marviq/madlib-locale.git"
   },
   "author": {
     "name": "Raymond de Wit",
