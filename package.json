@@ -2,7 +2,7 @@
   "name": "madlib-locale",
   "description": "Locale manager to handle translations of handlebar templates",
   "main": "lib/locale.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/marviq/madlib-locale.git"
