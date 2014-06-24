@@ -1,6 +1,18 @@
 {
   "name": "madlib-locale",
   "description": "Locale manager to handle translations of handlebar templates",
+  "keywords": [
+      "handlebars"
+    , "handlebarsjs"
+    , "multilanguage"
+    , "i18n"
+    , "translate"
+    , "formatting"
+    , "accounting"
+    , "dateformat"
+    , "momentjs"
+    , "moment"
+  ],
   "main": "lib/index.js",
   "version": "0.0.8",
   "repository": {

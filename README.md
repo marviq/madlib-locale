@@ -1,7 +1,7 @@
 ## madlib-locale
 Need support for multiple languages/locales in your project? This module adds several helpers to Handlebars to extend it to help you accomplish exactly this. It can format dates, numbers, money and "translate" texts. Next to that it will help you load the locale file (async) when changing the language setting.
 
-The module used the following modules to achieve all of this:
+The module uses the following modules to achieve all of this:
 - accounting: http://josscrowcroft.github.io/accounting.js/
 - moment: http://momentjs.com/
 - node-polyglot: https://github.com/ricardobeat/node-polyglot
