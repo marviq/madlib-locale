@@ -2,19 +2,19 @@
   "name": "madlib-locale",
   "description": "Locale manager to handle translations of handlebar templates",
   "keywords": [
-      "handlebars"
-    , "handlebarsjs"
-    , "multilanguage"
-    , "i18n"
-    , "translate"
-    , "formatting"
-    , "accounting"
-    , "dateformat"
-    , "momentjs"
-    , "moment"
+    "handlebars",
+    "handlebarsjs",
+    "multilanguage",
+    "i18n",
+    "translate",
+    "formatting",
+    "accounting",
+    "dateformat",
+    "momentjs",
+    "moment"
   ],
   "main": "lib/index.js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/marviq/madlib-locale.git"
