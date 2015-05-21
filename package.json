@@ -25,6 +25,11 @@
     "grunt-contrib-coffee": "^0.13.0",
     "grunt-mocha-test": "~0.12.7"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib"
+  ],
   "keywords": [
     "handlebars",
     "handlebarsjs",
