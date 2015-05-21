@@ -23,6 +23,9 @@
         ], factory )
 
 )( ( Q, console, settings, objectUtils, XHR, Polyglot, Moment, accounting ) ->
+
+    'use strict'
+
     ###*
     #   This module is used to handle translations, formatting and locale settings
     #
@@ -31,6 +34,7 @@
     #   @constructor
     #   @version        0.1
     ###
+
     class LocaleManager
         locale:         undefined
         cache:          {}
