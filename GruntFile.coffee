@@ -50,6 +50,6 @@ module.exports = ( grunt ) ->
     ]
 
     grunt.registerTask 'test',
-    [   "browserify:debug"
+    [
         "mochaTest"
     ]
