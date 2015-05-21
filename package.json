@@ -1,40 +1,8 @@
 {
-  "name": "madlib-locale",
-  "description": "Locale manager to handle translations of handlebar templates",
-  "keywords": [
-    "handlebars",
-    "handlebarsjs",
-    "multilanguage",
-    "i18n",
-    "translate",
-    "formatting",
-    "accounting",
-    "dateformat",
-    "momentjs",
-    "moment"
-  ],
-  "main": "lib/index.js",
-  "version": "0.0.9",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/marviq/madlib-locale.git"
-  },
   "author": {
     "name": "Raymond de Wit",
     "email": "raymond.de.wit@marviq.com",
     "url": "https://www.marviq.com"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "command -v grunt >/dev/null 2>&1 && grunt || { echo >&2 'Grunt is not installed'; }"
-  },
-  "devDependencies": {
-    "chai": "~2.3.0",
-    "coffee-script": "~1.9.2",
-    "grunt": "~0.4.5",
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-coffee": "^0.13.0",
-    "grunt-mocha-test": "~0.12.7"
   },
   "dependencies": {
     "accounting": "^0.4.1",
@@ -48,5 +16,37 @@
     "node-polyglot": "^0.4.1",
     "q": "^1.4.1"
   },
-  "license": "BSD-3-Clause"
+  "description": "Locale manager to handle translations of handlebar templates",
+  "devDependencies": {
+    "chai": "~2.3.0",
+    "coffee-script": "~1.9.2",
+    "grunt": "~0.4.5",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-coffee": "^0.13.0",
+    "grunt-mocha-test": "~0.12.7"
+  },
+  "keywords": [
+    "handlebars",
+    "handlebarsjs",
+    "multilanguage",
+    "i18n",
+    "translate",
+    "formatting",
+    "accounting",
+    "dateformat",
+    "momentjs",
+    "moment"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "lib/index.js",
+  "name": "madlib-locale",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marviq/madlib-locale.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "command -v grunt >/dev/null 2>&1 && grunt || { echo >&2 'Grunt is not installed'; }"
+  },
+  "version": "0.0.9"
 }
