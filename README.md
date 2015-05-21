@@ -81,6 +81,11 @@ Money - Pass the type as defined in localeFile and the money/amount value
 ```
 
 
+## ChangeLog
+
+Refer to the [releases on GitHub](https://github.com/marviq/madlib-locale/releases) for a detailed log of changes.
+
+
 ## License
 
 [BSD-3-Clause](LICENSE)
