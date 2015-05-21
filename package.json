@@ -32,14 +32,10 @@
   ],
   "keywords": [
     "handlebars",
-    "handlebarsjs",
-    "multilanguage",
     "i18n",
     "translate",
-    "formatting",
     "accounting",
     "dateformat",
-    "momentjs",
     "moment"
   ],
   "license": "BSD-3-Clause",
