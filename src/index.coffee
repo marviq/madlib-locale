@@ -1,25 +1,25 @@
 ( ( factory ) ->
-    if typeof exports is "object"
+    if typeof exports is 'object'
         module.exports = factory(
-            require "q"
-            require "madlib-console"
-            require "madlib-settings"
-            require "madlib-object-utils"
-            require "madlib-xhr"
-            require "node-polyglot"
-            require "moment"
-            require "accounting"
+            require( 'q' )
+            require( 'madlib-console' )
+            require( 'madlib-settings' )
+            require( 'madlib-object-utils' )
+            require( 'madlib-xhr' )
+            require( 'node-polyglot' )
+            require( 'moment' )
+            require( 'accounting' )
         )
-    else if typeof define is "function" and define.amd
+    else if typeof define is 'function' and define.amd
         define( [
-            "q"
-            "madlib-console"
-            "madlib-settings"
-            "madlib-object-utils"
-            "madlib-xhr"
-            "node-polyglot"
-            "moment"
-            "accounting"
+            'q'
+            'madlib-console'
+            'madlib-settings'
+            'madlib-object-utils'
+            'madlib-xhr'
+            'node-polyglot'
+            'moment'
+            'accounting'
         ], factory )
 
 )( ( Q, console, settings, objectUtils, XHR, Polyglot, Moment, accounting ) ->
@@ -35,7 +35,7 @@
         locale:         undefined
         cache:          {}
         initialized:    false
-        localeLocation:  "./i18n"
+        localeLocation:  './i18n'
 
         initialize: ( Handlebars, locale, localeLocation ) ->
 
@@ -51,25 +51,25 @@
                 # and load the default phrases
                 #
                 @polyglot = new Polyglot(
-                    locale:     objectUtils.getValue( "name",    @locale, "??" )
-                    phrases:    objectUtils.getValue( "phrases", @locale, {}   )
+                    locale:     objectUtils.getValue( 'name',    @locale, '??' )
+                    phrases:    objectUtils.getValue( 'phrases', @locale, {}   )
                 )
 
                 # Register the handlebars helper(s)
                 #
-                Handlebars.registerHelper( "_translate", ( key, interpolation = {} ) =>
+                Handlebars.registerHelper( '_translate', ( key, interpolation = {} ) =>
                     @translate( key, interpolation )
                 )
 
-                Handlebars.registerHelper( "_date", ( type, date ) =>
+                Handlebars.registerHelper( '_date', ( type, date ) =>
                     @date( type, date )
                 )
 
-                Handlebars.registerHelper( "_money", ( currency, amount ) =>
+                Handlebars.registerHelper( '_money', ( currency, amount ) =>
                     @money( currency, amount )
                 )
 
-                Handlebars.registerHelper( "_number", ( number ) =>
+                Handlebars.registerHelper( '_number', ( number ) =>
                     @number( number )
                 )
 
@@ -78,9 +78,9 @@
                 return @setLocale( locale )
 
             else
-                console.error( "[LocaleManager] Already initialized" )
+                console.error( '[LocaleManager] Already initialized' )
 
-                return Q.reject( "[LocaleManager] Already initialized" )
+                return Q.reject( '[LocaleManager] Already initialized' )
 
         setLocale: ( locale ) ->
 
@@ -92,8 +92,8 @@
                 #
                 if @cache[ locale ]?
                     @locale = @cache[ locale ]
-                    @polyglot.locale(  objectUtils.getValue( "name",    @locale, "??" ) )
-                    @polyglot.replace( objectUtils.getValue( "phrases", @locale, {}   ) )
+                    @polyglot.locale(  objectUtils.getValue( 'name',    @locale, '??' ) )
+                    @polyglot.replace( objectUtils.getValue( 'phrases', @locale, {}   ) )
 
                     deferred.resolve()
                 else
@@ -102,16 +102,16 @@
                     xhr = new XHR( settings )
                     xhr.call(
                         url:    "./#{@localeLocation}/#{locale}.json"
-                        type:   "json"
-                        method: "GET"
+                        type:   'json'
+                        method: 'GET'
                     )
                     .then( ( data ) =>
                         # Set polyglot locale and phrases on success
                         #
                         @locale = data.response
 
-                        @polyglot.locale(  objectUtils.getValue( "name",    @locale, "??" ) )
-                        @polyglot.replace( objectUtils.getValue( "phrases", @locale, {}   ) )
+                        @polyglot.locale(  objectUtils.getValue( 'name',    @locale, '??' ) )
+                        @polyglot.replace( objectUtils.getValue( 'phrases', @locale, {}   ) )
 
                         # Add the default locale to the cache
                         #
@@ -119,7 +119,7 @@
 
                         deferred.resolve()
 
-                    ,   ( error ) =>
+                    ,   ( error ) ->
                         console.error( "[i18n] Failed to load locale #{locale}")
                         deferred.reject( error )
                     )
@@ -128,7 +128,7 @@
                 return deferred.promise
 
             else
-                console.error( "[LocaleManager] Tried to set locale before initializing" )
+                console.error( '[LocaleManager] Tried to set locale before initializing' )
 
         getLocaleName: () ->
             return @locale.name
@@ -144,20 +144,20 @@
         money: ( currency, amount ) ->
             # Choose the default currency if requested
             #
-            if currency is "default"
-                currency = objectUtils.getValue( "formatting.money.default", @locale )
+            if currency is 'default'
+                currency = objectUtils.getValue( 'formatting.money.default', @locale )
 
-            sign        = objectUtils.getValue( "formatting.money.#{currency}.sign",      @locale,  "?" )
+            sign        = objectUtils.getValue( "formatting.money.#{currency}.sign",      @locale,  '?' )
             precision   = objectUtils.getValue( "formatting.money.#{currency}.precision", @locale,  2   )
-            decimal     = objectUtils.getValue( "formatting.number.decimalMarker",        @locale,  "." )
-            thousand    = objectUtils.getValue( "formatting.number.thousandMarker",       @locale,  "," )
+            decimal     = objectUtils.getValue( 'formatting.number.decimalMarker',        @locale,  '.' )
+            thousand    = objectUtils.getValue( 'formatting.number.thousandMarker',       @locale,  ',' )
 
             return accounting.formatMoney( amount, sign, precision, thousand, decimal )
 
         number: ( number ) ->
-            precision   = objectUtils.getValue( "formatting.number.precision",      @locale, 3   )
-            decimal     = objectUtils.getValue( "formatting.number.decimalMarker",  @locale, "." )
-            thousand    = objectUtils.getValue( "formatting.number.thousandMarker", @locale, "," )
+            precision   = objectUtils.getValue( 'formatting.number.precision',      @locale, 3   )
+            decimal     = objectUtils.getValue( 'formatting.number.decimalMarker',  @locale, '.' )
+            thousand    = objectUtils.getValue( 'formatting.number.thousandMarker', @locale, ',' )
 
             return accounting.formatNumber( number, precision, thousand, decimal )
 

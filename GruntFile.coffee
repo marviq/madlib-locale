@@ -2,12 +2,12 @@ module.exports = ( grunt ) ->
 
     # Project configuration
     #
-    grunt.initConfig
-        pkg:    grunt.file.readJSON( "package.json" )
+    grunt.initConfig(
+        pkg:    grunt.file.readJSON( 'package.json' )
 
         clean:
             lib:
-                src: [ "lib" ]
+                src: [ 'lib' ]
 
         coffee:
             default:
@@ -25,31 +25,38 @@ module.exports = ( grunt ) ->
                 options:
                     reporter: 'spec'
                     require:  'coffee-script'
-                src: [ 'test/**/*.js', "test/**/*.coffee" ]
+                src: [ 'test/**/*.js', 'test/**/*.coffee' ]
+    )
 
     # These plug-ins provide the necessary tasks
     #
-    grunt.loadNpmTasks 'grunt-contrib-coffee'
-    grunt.loadNpmTasks "grunt-contrib-clean"
-    grunt.loadNpmTasks "grunt-mocha-test"
+    grunt.loadNpmTasks( 'grunt-contrib-coffee' )
+    grunt.loadNpmTasks( 'grunt-contrib-clean' )
+    grunt.loadNpmTasks( 'grunt-mocha-test' )
 
     # Default tasks
     #
-    grunt.registerTask "default",
-    [
-        "clean:lib"
-        "coffee"
-        "mochaTest"
-    ]
+    grunt.registerTask(
+        'default'
+        [
+            'clean:lib'
+            'coffee'
+            'mochaTest'
+        ]
+    )
 
-    grunt.registerTask "debug",
-    [
-        "clean:lib"
-        "coffee"
-        "mochaTest"
-    ]
+    grunt.registerTask(
+        'debug'
+        [
+            'clean:lib'
+            'coffee'
+            'mochaTest'
+        ]
+    )
 
-    grunt.registerTask 'test',
-    [
-        "mochaTest"
-    ]
+    grunt.registerTask(
+        'test'
+        [
+            'mochaTest'
+        ]
+    )
