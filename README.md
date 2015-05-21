@@ -22,7 +22,7 @@ To use it you will need to require the module, the module itself will export a s
 
 Optionally you can pass a third parameter which is the `localeLocation`.  This defaults to `"/i18n"`. If you want to put your locale files in a different folder, pass this parameter.
 
-```shell
+```coffee
 localeManager = require( "madlib-locale" )
 localeManager.initialize( Handlebars, "en_GB" ).then(
   () ->
@@ -30,14 +30,13 @@ localeManager.initialize( Handlebars, "en_GB" ).then(
 , () ->
     console.error( "something went wrong...." )
 ).done()
-
 ```
 
 ## Change the language
 
 You can change the current language at any time by calling the `setLocale` function on the localeManager.  The function will return a promise, once this is resolved and you re-render you templates they will be in the new language
 
-```shell
+```coffee
 localeManager = require( "madlib-locale" )
 localeManager.setLocale( Handlebars, "en_GB" ).then(
   () ->
@@ -45,14 +44,13 @@ localeManager.setLocale( Handlebars, "en_GB" ).then(
 , () ->
     console.error( "something went wrong...." )
 ).done()
-
 ```
 
 ## Get the current language name
 
 To retrieve the current language name:
 
-```shell
+```coffee
 localeManager = require( "madlib-locale" )
 localeName = localeManager.getLocaleName()
 ```
@@ -63,22 +61,26 @@ See the exampleLocale file in the repo as an example
 
 ## How to use all of this in your Handlebar templates
 Translate - pass the key of the phrase in the localeFile
-```shell
+
+```hbs
 {{_translate "i18n-date"}}
 ```
 
 Date - pass the type of formatting as defined in localeFile and the date, this can be any format as long as MomentJS can parse it.
-```shell
+
+```hbs
 {{_date "date" date }}
 ```
 
 Number - pass the number to format
-```shell
+
+```hbs
 {{_number number }}
 ```
 
 Money - Pass the type as defined in localeFile and the money/amount value
-```shell
+
+```hbs
 {{_money "euro" money}}
 ```
 
