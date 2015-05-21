@@ -79,3 +79,8 @@ Money - Pass the type as defined in localeFile and the money/amount value
 ```shell
 {{_money "euro" money}}
 ```
+
+
+## License
+
+[BSD-3-Clause](LICENSE)

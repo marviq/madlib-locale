@@ -48,9 +48,5 @@
     "node-polyglot": "^0.4.1",
     "q": "^1.4.1"
   },
-  "licenses": [
-    {
-      "type": "BSD"
-    }
-  ]
+  "license": "BSD-3-Clause"
 }
