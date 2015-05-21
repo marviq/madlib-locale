@@ -34,7 +34,7 @@
     class LocaleManager
         locale:         undefined
         cache:          {}
-        initialized:    false 
+        initialized:    false
         localeLocation:  "./i18n"
 
         initialize: ( Handlebars, locale, localeLocation ) ->
@@ -77,14 +77,14 @@
                 #
                 return @setLocale( locale )
 
-            else 
+            else
                 console.error( "[LocaleManager] Already initialized" )
 
                 return Q.reject( "[LocaleManager] Already initialized" )
 
         setLocale: ( locale ) ->
 
-            if @initialized is true 
+            if @initialized is true
 
                 deferred = Q.defer()
 
@@ -126,8 +126,8 @@
                     .done()
 
                 return deferred.promise
-            
-            else 
+
+            else
                 console.error( "[LocaleManager] Tried to set locale before initializing" )
 
         getLocaleName: () ->

@@ -1,5 +1,5 @@
 ## madlib-locale
-Need support for multiple languages/locales in your project? This module adds several helpers to Handlebars to extend it to help you accomplish exactly this. It can format dates, numbers, money and "translate" texts. Next to that it will help you load the locale file (async) when changing the language setting.
+Need support for multiple languages/locales in your project? This module adds several helpers to Handlebars to extend it to help you accomplish exactly this. It can format dates, numbers, money and "translate" texts.  Next to that it will help you load the locale file (async) when changing the language setting.
 
 The module uses the following modules to achieve all of this:
 - accounting: http://josscrowcroft.github.io/accounting.js/
@@ -15,14 +15,10 @@ npm install madlib-locale --save
 
 ## Setup
 
-To use it you will need to require the module, the module itself will export an singleton object. 
-Before rendering any templates you will first need to call the initialize function to pass the Handlebars
-reference to extend with the helpers and set the default locale. Calling initialize will return an promise
-when this is resolved the locale file loaded and you can savely render your templates.
+To use it you will need to require the module, the module itself will export an singleton object.  Before rendering any templates you will first need to call the initialize function to pass the Handlebars reference to extend with the helpers and set the default locale.  Calling initialize will return an promise when this is resolved the locale file loaded and you can savely render your templates.
 
 *optional
-Optionally you can pass a thirth parameter to the function which is the localeLocation.
-This defaults to "/i18n" if you want to put your locale files in a different folder pass this parameter
+Optionally you can pass a thirth parameter to the function which is the localeLocation.  This defaults to "/i18n" if you want to put your locale files in a different folder pass this parameter
 
 ```shell
 localeManager = require( "madlib-locale" )
@@ -37,9 +33,7 @@ localeManager.initialize( Handlebars, "en_GB" ).then(
 
 ## Change the language
 
-You can change the current language at any time by calling the setLocale function on the localeManager.
-The function will return an promise, once this is resolved and you re-render you templates they will be 
-in the new language
+You can change the current language at any time by calling the setLocale function on the localeManager.  The function will return an promise, once this is resolved and you re-render you templates they will be in the new language
 
 ```shell
 localeManager = require( "madlib-locale" )

@@ -1,8 +1,8 @@
 {
-    "name":                             "en_GB"
+    "name":                         "en_GB"
 ,   "phrases":
     {
-        "keyInTemplate":                "Value"
+        "keyInTemplate":            "Value"
     }
 ,   "formatting":
     {
