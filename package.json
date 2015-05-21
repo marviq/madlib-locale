@@ -50,7 +50,6 @@
     "url": "https://github.com/marviq/madlib-locale.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "command -v grunt >/dev/null 2>&1 && grunt || { echo >&2 'Grunt is not installed'; }"
   },
   "version": "0.0.9"
