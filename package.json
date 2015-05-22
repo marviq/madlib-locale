@@ -4,6 +4,7 @@
     "email": "raymond.de.wit@marviq.com",
     "url": "https://www.marviq.com"
   },
+  "bugs": "https://github.com/marviq/madlib-locale/issues",
   "dependencies": {
     "accounting": "^0.4.1",
     "handlebars": "^3.0.3",
