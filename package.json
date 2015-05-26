@@ -49,5 +49,5 @@
   "scripts": {
     "prepublish": "command -v grunt > /dev/null || { echo >&2 'It appears that \"grunt\" is not installed.  Consider running \"[sudo ]npm install -g grunt-cli\" first.'; exit ; } && grunt"
   },
-  "version": "0.0.9"
+  "version": "0.1.0"
 }
