@@ -9,6 +9,8 @@
             require( 'node-polyglot' )
             require( 'moment' )
             require( 'accounting' )
+            require( 'underscore' )
+            require( 'underscore.string/capitalize' )
         )
     else if typeof define is 'function' and define.amd
         define( [
@@ -20,9 +22,11 @@
             'node-polyglot'
             'moment'
             'accounting'
+            'underscore'
+            'underscore.string/capitalize'
         ], factory )
 
-)( ( Q, console, settings, objectUtils, XHR, Polyglot, Moment, accounting ) ->
+)( ( Q, console, settings, objectUtils, XHR, Polyglot, Moment, accounting, _, capitalize ) ->
 
     'use strict'
 
@@ -64,6 +68,9 @@
                 translate = ( key, args..., meta ) =>
                     interpolation = if args.length then args else meta.hash
                     @translate( key, interpolation )
+
+                Handlebars.registerHelper( 't', translate )
+                Handlebars.registerHelper( 'T', _.compose( capitalize, translate ))
 
                 Handlebars.registerHelper( '_translate', translate )
 

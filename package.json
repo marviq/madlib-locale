@@ -15,7 +15,9 @@
     "madlib-xhr": "^0.1.21",
     "moment": "^2.10.6",
     "node-polyglot": "^0.4.3",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.2.2"
   },
   "description": "Locale manager to handle translations of handlebar templates",
   "devDependencies": {
