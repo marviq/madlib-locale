@@ -61,9 +61,11 @@
 
                 # Register the handlebars helper(s)
                 #
-                Handlebars.registerHelper( '_translate', ( key, interpolation = {} ) =>
+                translate = ( key, args..., meta ) =>
+                    interpolation = if args.length then args else meta.hash
                     @translate( key, interpolation )
-                )
+
+                Handlebars.registerHelper( '_translate', translate )
 
                 Handlebars.registerHelper( '_date', ( type, date ) =>
                     @date( type, date )
