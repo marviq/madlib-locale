@@ -114,7 +114,7 @@
                     #
                     xhr = new XHR( settings )
                     xhr.call(
-                        url:    "./#{@localeLocation}/#{locale}.json"
+                        url:    "{@localeLocation}/#{locale}.json"
                         type:   'json'
                         method: 'GET'
                     )
