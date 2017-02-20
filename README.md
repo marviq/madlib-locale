@@ -103,6 +103,12 @@ See the [examples](https://github.com/marviq/madlib-locale/blob/develop/examples
     {{_number number }}
     ```
 
+    Pass the number to format with alternative precision:
+
+    ```hbs
+    {{_number number 2 }}
+    ```
+
   * Money
 
     Pass the type as defined in localeFile and the money/amount value:

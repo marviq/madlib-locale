@@ -70,21 +70,16 @@
                     @translate( key, interpolation )
 
                 Handlebars.registerHelper( 't', translate )
-                Handlebars.registerHelper( 'T', _.compose( capitalize, translate ))
-
+                Handlebars.registerHelper( 'T', _.compose( capitalize, translate ) )
                 Handlebars.registerHelper( '_translate', translate )
 
-                Handlebars.registerHelper( '_date', ( type, date ) =>
-                    @date( type, date )
-                )
+                Handlebars.registerHelper( '_date', _.bind( @date, @ ) )
+                Handlebars.registerHelper( '_money', _.bind( @money, @ ) )
 
-                Handlebars.registerHelper( '_money', ( currency, amount ) =>
-                    @money( currency, amount )
-                )
+                number = _.bind( @number, @ )
 
-                Handlebars.registerHelper( '_number', ( number ) =>
-                    @number( number )
-                )
+                Handlebars.registerHelper( 'N', number )
+                Handlebars.registerHelper( '_number', number )
 
                 # Set the default locale and return promise
                 #
@@ -167,8 +162,8 @@
 
             return accounting.formatMoney( amount, sign, precision, thousand, decimal )
 
-        number: ( number ) ->
-            precision   = objectUtils.getValue( 'formatting.number.precision',      @locale, 3   )
+        number: ( number, precision ) ->
+            precision  ?= objectUtils.getValue( 'formatting.number.precision',      @locale, 3   )
             decimal     = objectUtils.getValue( 'formatting.number.decimalMarker',  @locale, '.' )
             thousand    = objectUtils.getValue( 'formatting.number.thousandMarker', @locale, ',' )
 
