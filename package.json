@@ -11,7 +11,7 @@
     "madlib-object-utils": "^0.1.6",
     "madlib-settings": "^0.1.7",
     "madlib-xhr": "^0.1.21",
-    "moment": "^2.11.2",
+    "moment": "^2.17.1",
     "node-polyglot": "^1.0.0",
     "q": "^1.4.1",
     "underscore": "^1.8.3",
@@ -20,12 +20,12 @@
   "description": "Locale manager to handle translations of handlebar templates",
   "devDependencies": {
     "chai": "~3.5.0",
-    "coffee-script": "~1.10.0",
-    "grunt": "~0.4.5",
+    "coffee-script": "^1.12.4",
+    "grunt": "^1.0.1",
     "grunt-contrib-clean": "~1.0.0",
     "grunt-contrib-coffee": "^1.0.0",
-    "grunt-mocha-test": "~0.12.7",
-    "handlebars": "^4.0.5"
+    "grunt-mocha-test": "^0.13.2",
+    "handlebars": "^4.0.6"
   },
   "files": [
     "AUTHORS",
