@@ -3,7 +3,9 @@
 [![npm version](https://badge.fury.io/js/madlib-locale.svg)](http://badge.fury.io/js/madlib-locale)
 [![David dependency drift detection](https://david-dm.org/marviq/madlib-locale.svg)](https://david-dm.org/marviq/madlib-locale)
 
-Need support for multiple languages/locales in your project? This module adds several helpers to Handlebars to extend it to help you accomplish exactly this. It can format dates, numbers, money and "translate" texts.  Next to that it will help you load the locale file (async) when changing the language setting.
+A `Handlebars` helper collection providing keyed dictionary substitution and simple localization.
+
+It can format dates, numbers, money and "translate" texts.  Next to that it will help you load the locale file (async) when changing the `language` setting.
 
 The module uses the following modules to achieve all of this:
 - [`accounting`](http://openexchangerates.github.io/accounting.js/)
@@ -20,32 +22,46 @@ npm install madlib-locale --save
 
 ## Using
 
-To use it you will need to require the module, the module itself will export a singleton object.  Before rendering any templates you will first need to call the initialize function to pass the Handlebars reference to extend with the helpers and set the default locale.  Calling initialize will return a promise when this is resolved the locale file loaded and you can savely render your templates.
+The module will export a singleton object.  Before rendering any templates you will first need to call `initialize()`, passing in the `Handlebars` runtime reference to extend with `madlib-locale`'s helpers.  This also allows you to set the default locale.  The `initialize()` invocation will return a [(Q) `Promise`](https://github.com/kriskowal/q) that'll resolve when the locale file has been loaded.
 
-Optionally you can pass a third parameter which is the `localeLocation`.  This defaults to `"/i18n"`. If you want to put your locale files in a different folder, pass this parameter.
+Optionally you can pass a third parameter which is the `localeLocation`.  This defaults to `'/i18n'`.  If you want to put your locale files in a different folder, pass this parameter.
 
 ```coffee
-localeManager = require( "madlib-locale" )
-localeManager.initialize( Handlebars, "en_GB" ).then(
-  () ->
-    ## Ready to render templates using the helper functions
-, () ->
-    console.error( "something went wrong...." )
-).done()
+localeManager   = require( 'madlib-locale' )
+
+localeManager
+    .initialize( Handlebars, 'en-GB', '/examples' )
+    .then(
+
+        () ->
+            ## Ready to render templates using the helper functions
+            return
+
+        () ->
+
+            console.error( 'something went wrong...' )
+            return
+    )
+    .done()
 ```
 
 ### Change the language
 
-You can change the current language at any time by calling the `setLocale` function on the localeManager.  The function will return a promise, once this is resolved and you re-render you templates they will be in the new language
+You can change the current language at any time by calling `setLocale()` on the `localeManager`; it, too, will return a `Promise`.  Once resolved, a re-render of your templates will ensure they'll be in the new language.
 
 ```coffee
-localeManager = require( "madlib-locale" )
-localeManager.setLocale( Handlebars, "en_GB" ).then(
-  () ->
-    ## Ready to render templates using the helper functions
-, () ->
-    console.error( "something went wrong...." )
-).done()
+localeManager
+    .setLocale( Handlebars, 'en-GB' )
+    .then(
+
+        () ->
+            ## Ready to render templates using the helper functions
+            return
+
+        () ->
+            console.error( 'something went wrong...' )
+            return
+    )
 ```
 
 ### Get the current language name
@@ -53,38 +69,47 @@ localeManager.setLocale( Handlebars, "en_GB" ).then(
 To retrieve the current language name:
 
 ```coffee
-localeManager = require( "madlib-locale" )
-localeName = localeManager.getLocaleName()
+localeName      = localeManager.getLocaleName()
 ```
 
-### How to setup the locale file
+### How to set up the locale file
 
-See the exampleLocale file in the repo as an example
+See the [examples](https://github.com/marviq/madlib-locale/blob/develop/examples/) on GitHub.
 
 ### How to use all of this in your Handlebar templates
-Translate - pass the key of the phrase in the localeFile
 
-```hbs
-{{_translate "i18n-date"}}
-```
 
-Date - pass the type of formatting as defined in localeFile and the date, this can be any format as long as MomentJS can parse it.
+  * Translate
 
-```hbs
-{{_date "date" date }}
-```
+    Pass the key of the phrase in the localeFile:
 
-Number - pass the number to format
+    ```hbs
+    {{_translate 'i18n-date'}}
+    ```
 
-```hbs
-{{_number number }}
-```
+  * Date
 
-Money - Pass the type as defined in localeFile and the money/amount value
+    Pass the type of formatting as defined in localeFile and the date, this can be any format as long as MomentJS can parse it:
 
-```hbs
-{{_money "euro" money}}
-```
+    ```hbs
+    {{_date 'date' date }}
+    ```
+
+  * Number
+
+    Pass the number to format:
+
+    ```hbs
+    {{_number number }}
+    ```
+
+  * Money
+
+    Pass the type as defined in localeFile and the money/amount value:
+
+    ```hbs
+    {{_money 'euro' money}}
+    ```
 
 
 ## Contributing
@@ -194,7 +219,7 @@ $ git config commit.template ./.gitmessage
     ```
 
     Note that contrary to vanilla `git flow`, the merge commit into `master` will *not* have been tagged (that's what the
-    [`-n`](https://github.com/nvie/gitflow/wiki/Command-Line-Arguments#git-flow-release-finish--fsumpkn-version) was for). This is done because
+    [`-n`](https://github.com/nvie/gitflow/wiki/Command-Line-Arguments#git-flow-release-finish--fsumpkn-version) was for).  This is done because
     `npm run release` has already tagged its own commit.
 
     I believe that in practice, this won't make a difference for the use of `git flow`; and ensuring it's done the other way round instead would render the use
