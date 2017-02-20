@@ -12,7 +12,7 @@
     "madlib-settings": "^0.1.7",
     "madlib-xhr": "^0.1.21",
     "moment": "^2.17.1",
-    "node-polyglot": "^1.0.0",
+    "node-polyglot": "^2.2.2",
     "q": "^1.4.1",
     "underscore": "^1.8.3",
     "underscore.string": "^3.3.4"
@@ -73,5 +73,5 @@
     "release": "standard-version",
     "test": "command -v grunt > /dev/null || { echo >&2 'It appears that \"grunt\" is not installed.  Consider running \"[sudo ]npm install -g grunt-cli\" first.'; exit ; } && grunt test"
   },
-  "version": "0.3.0"
+  "version": "0.3.1"
 }
