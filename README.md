@@ -257,7 +257,7 @@ git push --follow-tags --all
 
 ## ChangeLog
 
-See [CHANGELOG](./CHANGELOG.md) for versions >`0.2.1`; For older versions, refer to the [releases on GitHub](https://github.com/marviq/madlib-locale/releases) for a detailed log of changes.
+See [CHANGELOG](./CHANGELOG.md) for versions >`0.2.1`;  For older versions, refer to the [releases on GitHub](https://github.com/marviq/madlib-locale/releases?after=v0.3.0) for a detailed log of changes.
 
 
 ## License
