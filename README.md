@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/madlib-locale.svg)](http://badge.fury.io/js/madlib-locale)
 [![David dependency drift detection](https://david-dm.org/marviq/madlib-locale.svg)](https://david-dm.org/marviq/madlib-locale)
 
-A `Handlebars` helper collection providing keyed dictionary substitution and simple localization.
+A [`Handlebars`](https://github.com/wycats/handlebars.js#readme) helper collection providing keyed dictionary substitution and simple localization.
 
 It can format dates, numbers, money and "translate" texts.  Next to that it will help you load the locale file (async) when changing the `language` setting.
 
@@ -22,7 +22,7 @@ npm install madlib-locale --save
 
 ## Using
 
-The module will export a singleton object.  Before rendering any templates you will first need to call `initialize()`, passing in the `Handlebars` runtime reference to extend with `madlib-locale`'s helpers.  This also allows you to set the default locale.  The `initialize()` invocation will return a [(Q) `Promise`](https://github.com/kriskowal/q) that'll resolve when the locale file has been loaded.
+The module will export a singleton object.  Before rendering any templates you will first need to call `initialize()`, passing in the [`Handlebars` runtime](http://handlebarsjs.com/installation.html#npm) reference to extend with `madlib-locale`'s helpers.  This also allows you to set the default locale.  The `initialize()` invocation will return a [(Q) `Promise`](https://github.com/kriskowal/q) that'll resolve when the locale file has been loaded.
 
 Optionally you can pass a third parameter which is the `localeLocation`.  This defaults to `'/i18n'`.  If you want to put your locale files in a different folder, pass this parameter.
 
