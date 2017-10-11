@@ -151,7 +151,6 @@ This will:
   * Ensure you have local `master` and `develop` branches tracking their respective remote counterparts;
   * Set up the git flow [branching model](#branching-model) with default branch names;
   * Install all required dependencies;
-  * The latter command will also invoke `grunt` (no args) for you, creating `lib` and `doc` build artifacts into `./dist`;
 
 
 ### Build
