@@ -6,14 +6,14 @@
     "url": "https://github.com/marviq/madlib-locale/issues"
   },
   "dependencies": {
-    "accounting": "^0.4.1",
+    "accounting": "<1",
     "madlib-console": "^0.1.4",
     "madlib-object-utils": "^0.1.6",
     "madlib-settings": "^0.1.7",
     "madlib-xhr": "^0.1.21",
-    "moment": "^2.17.1",
-    "node-polyglot": "^2.2.2",
-    "q": "^1.4.1",
+    "moment": "<3",
+    "node-polyglot": "<3",
+    "q": "^1.5.1",
     "underscore": "^1.8.3",
     "underscore.string": "^3.3.4"
   },
@@ -29,7 +29,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-contrib-yuidoc": "^1.0.0",
     "grunt-mocha-test": "^0.13.3",
-    "handlebars": "^4.0.6",
+    "handlebars": "<5",
     "mocha": "^4.0.1",
     "standard-version": "^4.2.0"
   },

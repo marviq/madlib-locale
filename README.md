@@ -14,17 +14,21 @@ The module uses the following modules to achieve all of this:
 
 ## Installing
 
-The module is available in the global NPM:
-
 ```shell
+npm install handlebars --save
 npm install madlib-locale --save
 ```
 
+
 ## Using
 
-The module will export a singleton object.  Before rendering any templates you will first need to call `initialize()`, passing in the [`Handlebars` runtime](http://handlebarsjs.com/installation.html#npm) reference to extend with `madlib-locale`'s helpers.  This also allows you to set the default locale.  The `initialize()` invocation will return a [(Q) `Promise`](https://github.com/kriskowal/q) that'll resolve when the locale file has been loaded.
+The module will export a singleton object.  Before rendering any templates you will first need to `initialize( ... )` it, passing in the
+[`Handlebars` runtime](http://handlebarsjs.com/installation.html#npm) reference to extend with `madlib-locale`'s helpers.  This also allows you to set the
+default locale.  The `initialize()` invocation will return a [(Q) `Promise`](https://github.com/kriskowal/q) that'll resolve when the locale file has been
+loaded.
 
-Optionally you can pass a third parameter which is the `localeLocation`.  This defaults to `'/i18n'`.  If you want to put your locale files in a different folder, pass this parameter.
+Optionally you can pass a third parameter which is the `localeLocation`.  This defaults to `'/i18n'`.  If you want to put your locale files in a different
+folder, pass this parameter.
 
 ```coffee
 localeManager   = require( 'madlib-locale' )
@@ -34,7 +38,7 @@ localeManager
     .then(
 
         () ->
-            ## Ready to render templates using the helper functions
+            ##  Ready to render templates using the helper functions
             return
 
         () ->
@@ -45,9 +49,11 @@ localeManager
     .done()
 ```
 
+
 ### Change the language
 
-You can change the current language at any time by calling `setLocale()` on the `localeManager`; it, too, will return a `Promise`.  Once resolved, a re-render of your templates will ensure they'll be in the new language.
+You can change the current language at any time by calling `setLocale()` on the `localeManager`; it, too, will return a `Promise`.  Once resolved, a re-render
+of your templates will ensure they'll be in the new language.
 
 ```coffee
 localeManager
@@ -55,7 +61,7 @@ localeManager
     .then(
 
         () ->
-            ## Ready to render templates using the helper functions
+            ##  Ready to render templates using the helper functions
             return
 
         () ->
@@ -63,6 +69,7 @@ localeManager
             return
     )
 ```
+
 
 ### Get the current language name
 
@@ -72,12 +79,13 @@ To retrieve the current language name:
 localeName      = localeManager.getLocaleName()
 ```
 
+
 ### How to set up the locale file
 
 See the [examples](https://github.com/marviq/madlib-locale/blob/develop/examples/) on GitHub.
 
-### How to use all of this in your Handlebar templates
 
+### How to use all of this in your Handlebars templates
 
   * Translate
 
