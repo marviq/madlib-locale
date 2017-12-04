@@ -34,7 +34,7 @@ This will:
   * Set up the git flow [branching model](#branching-model) with default branch names;
   * Set up two [git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) to ensure that your `node_modules` will be synced with the
     [`package-lock.json`](https://docs.npmjs.com/files/package-lock.json) dependency tree definition whenever a `git merge` or -`checkout` causes it to
-    change.
+    change;
   * Install all required dependencies, pruned and deduplicated;
 
 
@@ -74,6 +74,15 @@ git config commit.template ./.gitmessage
 
 
 ## Release
+
+  * Ensure that you're up to scratch:
+
+    ```bash
+    git checkout master
+    git pull
+    git checkout develop
+    git pull
+    ```
 
   * Determine what your next [semver](https://docs.npmjs.com/getting-started/semantic-versioning#semver-for-publishers) `<version>` should be:
 
@@ -135,5 +144,8 @@ git push --follow-tags --all
   * Go to [https://github.com/marviq/madlib-locale/releases](https://github.com/marviq/madlib-locale/releases);
   * Click the `Draft a new release` button;
   * Select the appropriate `v<version>` tag from the dropdown menu;
-  * You could enter a title and some release notes here but most of it _should_ have already been covered in the [CHANGELOG](./CHANGELOG.md).
+  * You could enter a title and some release notes here; at the very least include a link to the corresponding section in the [CHANGELOG](./CHANGELOG.md) as:
+    ```markdown
+    [Change log](CHANGELOG.md# ... )
+    ```
   * Click the `Publish release` button;
