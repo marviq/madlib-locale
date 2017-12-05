@@ -2,7 +2,25 @@
     "name":                         "en-GB"
 ,   "phrases":
     {
-        "keyInTemplate":                "Value"
+        "an.entry.in.your.phrases.dictionary":          "an entry in your phrases dictionary."
+    ,   "another.entry.in.your.phrases.dictionary":     "another entry in your phrases dictionary."
+    ,   "the": {
+            "date"                                          "date"
+        ,   "datetime"                                      "date and time"
+        ,   "phrases.dictionary":
+                "can.be.structured": {
+                    "any.way.you.see.fit":                          "the phrases dictionary can be organized in a way that fits your needs."
+                }
+            ,   "is.not.limited.to": {
+                    "a.flat.key-value.map":                         "the phrases dictionary isn't limited to a flat index."
+                ,   "ice-cream":                                    "the phrases dictionary isn't limited to ice-cream."
+                }
+            ,   "values.can.be.x":                                  "translations can be %{0}"
+            }
+        }
+    ,   "can.be": {
+            "interpolated":                                 "interpolated"
+        }
     }
 ,   "formatting":
     {

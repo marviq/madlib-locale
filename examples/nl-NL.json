@@ -1,0 +1,58 @@
+{
+    "name":                         "nl-NL"
+,   "phrases":
+    {
+        "an.entry.in.your.phrases.dictionary":          "een element in uw vertaalwoordenboek."
+    ,   "another.entry.in.your.phrases.dictionary":     "een ander element in uw vertaalwoordenboek."
+    ,   "the": {
+            "date":                                         "datum"
+        ,   "datetime":                                     "datum en tijd"
+        ,   "phrases.dictionary":
+                "can.be.structured": {
+                    "any.way.you.see.fit":                          "het vertaalwoordenboek kan op elk denkbare wijze worden ingedeeld."
+                }
+            ,   "is.not.limited.to": {
+                    "a.flat.key-value.map":                         "het vertaalwoordenboek is niet beperkt tot een plat lijstje."
+                ,   "ice-cream":                                    "het vertaalwoordenboek is niet beperkt tot een ijsje."
+                }
+            ,   "values.can.be.x":                                  "vertalingen kunnen worden %{0}"
+            }
+        }
+    ,   "can.be": {
+            "interpolated":                                 "geïnterpoleerd"
+        }
+    }
+,   "formatting":
+    {
+        "number":
+        {
+            "decimalMarker":                ","
+        ,   "thousandMarker":               "."
+        ,   "precision":                    3
+        }
+    ,   "datetime":
+        {
+            "date":                         "DD-MM-YYYY"
+        ,   "datetime":                     "DD-MM-YYYY HH:mm"
+        }
+    ,   "money":
+        {
+            "default":                      "euro"
+        ,   "dollar_US":
+            {
+                "sign":                     "$"
+            ,   "precision":                2
+            }
+        ,   "euro":
+            {
+                "sign":                     "\u20AC"
+            ,   "precision":                2
+            }
+        ,   "pound_GB":
+            {
+                "sign":                     "\u00A3"
+            ,   "precision":                2
+            }
+        }
+    }
+}

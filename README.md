@@ -3,14 +3,14 @@
 [![npm version](https://badge.fury.io/js/madlib-locale.svg)](http://badge.fury.io/js/madlib-locale)
 [![David dependency drift detection](https://david-dm.org/marviq/madlib-locale.svg)](https://david-dm.org/marviq/madlib-locale)
 
-A [`Handlebars`](https://github.com/wycats/handlebars.js#readme) helper collection providing keyed dictionary substitution and simple localization.
+A [`Handlebars.js`](https://github.com/wycats/handlebars.js#readme) helper collection providing keyed dictionary substitution and simple localization.
 
-It can format dates, numbers, money and "translate" texts.  Next to that it will help you load the locale file (async) when changing the `language` setting.
+It can format numbers, money, dates, and "translate" texts using the following helpers:
 
-The module uses the following modules to achieve all of this:
 - [`accounting`](http://openexchangerates.github.io/accounting.js/)
 - [`moment`](http://momentjs.com/)
-- [`node-polyglot`](http://airbnb.github.com/polyglot.js)
+- [`node-polyglot`](http://airbnb.io/polyglot.js/)
+
 
 ## Installing
 
@@ -22,15 +22,18 @@ npm install madlib-locale --save
 
 ## Using
 
-The module will export a singleton object.  Before rendering any templates you will first need to `initialize( ... )` it, passing in the
-[`Handlebars` runtime](http://handlebarsjs.com/installation.html#npm) reference to extend with `madlib-locale`'s helpers.  This also allows you to set the
-default locale.  The `initialize()` invocation will return a [(Q) `Promise`](https://github.com/kriskowal/q) that'll resolve when the locale file has been
-loaded.
+`madlib-locale`'s single export is the `localeManager` object, which will need to be `initialize( ... )`-ed before use. `initialize( ... )` returns a
+[(Q) `Promise`](https://github.com/kriskowal/q#readme) that'll be fullfilled when the specified locale's definition file has been loaded; it takes in three
+parameters:
 
-Optionally you can pass a third parameter which is the `localeLocation`.  This defaults to `'/i18n'`.  If you want to put your locale files in a different
-folder, pass this parameter.
+  * The [`Handlebars`-](http://handlebarsjs.com/installation.html#npm) (or [`hbsfy` runtime](https://github.com/epeli/node-hbsfy#helpers) that is to be
+    extended with `madlib-locale`'s helpers;
+  * The locale, expressed  as a valid [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string; It'll designate a `.json` locale definition
+    file by the same name that is to be loaded;
+  * An optional url base path to retrieve that- and any future locale definition files from; it defaults to `'/i18n'`;
 
 ```coffee
+Handlebars      = require( 'handlebars/runtime' )
 localeManager   = require( 'madlib-locale' )
 
 localeManager
@@ -38,7 +41,9 @@ localeManager
     .then(
 
         () ->
+
             ##  Ready to render templates using the helper functions
+
             return
 
         () ->
@@ -50,18 +55,20 @@ localeManager
 ```
 
 
-### Change the language
+### Change the locale
 
-You can change the current language at any time by calling `setLocale()` on the `localeManager`; it, too, will return a `Promise`.  Once resolved, a re-render
-of your templates will ensure they'll be in the new language.
+The locale can be changed at any time through invoking `localeManager.setLocale( ... )`; it, too, will return a `Promise`.  Once resolved, a re-rendering
+of your templates will ensure they'll be in the new locale.
 
 ```coffee
 localeManager
-    .setLocale( Handlebars, 'en-GB' )
+    .setLocale( 'nl-NL' )
     .then(
 
         () ->
-            ##  Ready to render templates using the helper functions
+
+            ##  Ready to re-render templates using the helper functions
+
             return
 
         () ->
@@ -71,59 +78,157 @@ localeManager
 ```
 
 
-### Get the current language name
+### Get the current locale name
 
-To retrieve the current language name:
+To retrieve the current locale name:
 
 ```coffee
-localeName      = localeManager.getLocaleName()
+    console.log( "Current locale: #{ localeManager.getLocaleName() }" )
 ```
 
 
-### How to set up the locale file
+### Set up a locale definition file
 
-See the [examples](https://github.com/marviq/madlib-locale/blob/develop/examples/) on GitHub.
+At its top level, a locale definition file has a `name` string, and `phrases`- and `formatting` objects.
+
+  * `name` is expected to be a valid [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string.
+    This is also the name of the file (excluding the `.json` filename extension);
+  * <a name="definition-phrases">`phrases`</a> is any object acceptable as a phrases dictionary to [`node-polyglot`](http://airbnb.io/polyglot.js/#translation);
+  * `formatting` should contain three further sections:
+      * <a name="definition-datetime">`datetime`</a> is a keyword-to-[`Moment` `format( ... )` argument](http://momentjs.com/docs/#/displaying/format/)-mapping.
+        The examples unimaginatively sport descriptive identifying keywords like `date` and `datetime` but you can name them whatever you like;
+      * <a name="definition-money">`money`</a>, similary, is a
+        keyword-to-[`Accounting` `formatMoney( ... )` arguments](http://openexchangerates.github.io/accounting.js/#methods)-mapping, expecting only `sign`
+        (currency symbol) and `precision` arguments. The arguments for thousands- and decimal separator markers being taken from the `number` definition below;
+      * <a name="definition-number">`number`</a> is an object defining the `decimalMarker`, `thousandMarker` and (default) `precision` arguments to the
+        [`Accounting` `formatNumber( ... )`](http://openexchangerates.github.io/accounting.js/#methods) method;
 
 
-### How to use all of this in your Handlebars templates
+See also the [examples](https://github.com/marviq/madlib-locale/tree/develop/examples/) on GitHub.
 
-  * Translate
 
-    Pass the key of the phrase in the localeFile:
+### Use from your Handlebars templates
+
+  * Translate: `t` or `T`
+
+      * ... without interpolation
+
+        These helpers take one argument which should be a key into the [`phrases` dictionary](#definition-phrases) in your locale
+        definition file:
+
+        ```hbs
+        <ul>
+            <li>{{T 'an.entry.in.your.phrases.dictionary'}}</li>
+            <li>{{t 'another.entry.in.your.phrases.dictionary'}}</li>
+        </ul>
+        ```
+
+        The difference between `T` and `t` is that the former additionally does
+        [first-letter capitalization](https://github.com/epeli/underscore.string#capitalizestring-lowercaserestfalse--string) of the dictionary's value.
+
+        A longer form alternative to `t` which `madlib-locale` has historically provided is `_translate`. It does not have a capitalization variant.
+
+      * ... with interpolation
+
+        These helpers also support [`node-polyglot`'s interpolation](http://airbnb.io/polyglot.js/#interpolation); any additional positional arguments will be
+        interpolated into the resulting dictionary value string as follows:
+
+        ```json
+        {
+            "phrases": {
+                "the.phrases.dictionary.values.can.be.X.with.Y":    "translation strings can be %{0} with anything, like: \"%{1}\""
+            ,   "can.be.interpolated":                              "interpolated"
+            }
+        }
+        ```
+
+        ```hbs
+        {{T 'the.phrases.dictionary.values.can.be.X.with.Y' (t 'can.be.interpolated') some.example.value }}
+        ```
+
+      * ... with named parameters
+
+        Interpolations with named parameters are also possible:
+
+        ```json
+        {
+            "phrases": {
+                "the.phrases.dictionary.values.can.be.X.with.Y":    "translation strings can be %{foo} with anything, like: \"%{bar}\""
+            ,   "can.be.interpolated":                              "interpolated"
+            }
+        }
+        ```
+
+        ```hbs
+        {{T 'the.phrases.dictionary.values.can.be.X.with.Y' foo=(t 'can.be.interpolated') bar=some.example.value }}
+        ```
+
+      * ... with pluralization
+
+        Using the special named parameter `smart_count` you can leverage [`node-polyglot`'s pluralization](http://airbnb.io/polyglot.js/#pluralization)
+        mechanism:
+
+        ```json
+        {
+            "phrases": {
+                "some.mice":    "a mouse |||| some mice"
+            }
+        }
+        ```
+
+        ```hbs
+        {{T 'some.cars' smart_count=1 }}
+        {{T 'some.cars' smart_count=42 }}
+        ```
+
+        _Note that even though `node-polyglot` does allow interpolation of the `smart_count` value, it will not receive a localized formatting treatment._
+
+  * Date: `D`
+
+    It takes two arguments:
+
+      * a key into the [`formatting.datetime`](#definition-datetime) section of your locale definition file;
+      * ideally already a `Moment` instance, but any value that the [`Moment`](http://momentjs.com/docs/#/parsing/) constructor can grok as a date/time
+        argument should be fine.
 
     ```hbs
-    {{_translate 'i18n-date'}}
+    <dl>
+        <dt>{{T 'the.date'}}</dt>
+        <dd>{{D 'date' some.moment.compatible.value.to.be.formatted.as.a.date.string }}</dd>
+
+        <dt>{{T 'the.datetime'}}</dt>
+        <dd>{{D 'datetime' some.moment.compatible.value.to.be.formatted.as.a.date-and-time.string }}</dd>
+    </ul>
     ```
 
-  * Date
+    A longer form alternative to `D` which `madlib-locale` has historically provided is `_date`.
 
-    Pass the type of formatting as defined in localeFile and the date, this can be any format as long as MomentJS can parse it:
+  * Number: `N`
+
+    It takes one or two arguments:
 
     ```hbs
-    {{_date 'date' date }}
+    <ol>
+        <li>{{N some.value.to.be.formatted.as.a.number.with.default.precision }}</li>
+        <li>{{N some.value.to.be.formatted.as.a.number.with.alternative.precision 7 }}</li>
+    <ol>
     ```
 
-  * Number
-
-    Pass the number to format:
-
-    ```hbs
-    {{_number number }}
-    ```
-
-    Pass the number to format with alternative precision:
-
-    ```hbs
-    {{_number number 2 }}
-    ```
+    A longer form alternative to `N` which `madlib-locale` has historically provided is `_number`.
 
   * Money
 
-    Pass the type as defined in localeFile and the money/amount value:
+    It takes two arguments:
+
+      * a key into the [`formatting.money`](#definition-money) section of your locale definition file designating the specific currency to use or simply
+        `default` if the current locale defintion's default is desired;
+      * a number value to be formatted as an amount;
 
     ```hbs
-    {{_money 'euro' money}}
+    {{M 'euro' some.value.to.be.formatted.as.a.amount.of.money }}
     ```
+
+    A longer form alternative to `M` which `madlib-locale` has historically provided is `_money`.
 
 
 ## Contributing
