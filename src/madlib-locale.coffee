@@ -41,6 +41,7 @@
     ###
 
     class LocaleManager
+
         locale:         undefined
         cache:          {}
         initialized:    false
@@ -50,46 +51,58 @@
 
             if @initialized is false
 
-                @initialized = true
+                @initialized    = true
 
-                # Set location if given
-                #
+                ##  Set location if given
+                ##
                 @localeLocation = localeLocation if localeLocation?
 
-                # Create our polyglot instance
-                # and load the default phrases
-                #
-                @polyglot = new Polyglot(
-                    locale:     objectUtils.getValue( 'name',    @locale, '??' )
-                    phrases:    objectUtils.getValue( 'phrases', @locale, {}   )
-                )
+                ##  Create our polyglot instance
+                ##  and load the default phrases
+                ##
+                @polyglot       =
+                    new Polyglot(
+                        locale:     objectUtils.getValue( 'name',    @locale, '??' )
+                        phrases:    objectUtils.getValue( 'phrases', @locale, {}   )
+                    )
 
-                # Register the handlebars helper(s)
-                #
-                translate = ( key, args..., meta ) =>
-                    interpolation = if args.length then args else meta.hash
-                    @translate( key, interpolation )
+                ##  Register the handlebars helper(s)
+                ##
+                date            = _.bind( @date, @ )
+                money           = _.bind( @money, @ )
+                number          = _.bind( @number, @ )
+                translate       =
 
-                Handlebars.registerHelper( 't', translate )
-                Handlebars.registerHelper( 'T', _.compose( capitalize, translate ) )
-                Handlebars.registerHelper( '_translate', translate )
+                    ( key, args..., meta ) =>
 
-                Handlebars.registerHelper( '_date', _.bind( @date, @ ) )
-                Handlebars.registerHelper( '_money', _.bind( @money, @ ) )
+                        interpolation   = if args.length then args else meta.hash
 
-                number = _.bind( @number, @ )
+                        @translate( key, interpolation )
 
-                Handlebars.registerHelper( 'N', number )
-                Handlebars.registerHelper( '_number', number )
 
-                # Set the default locale and return promise
-                #
+                Handlebars.registerHelper( '_translate',                translate   )
+                Handlebars.registerHelper( 't',                         translate   )
+                Handlebars.registerHelper( 'T', _.compose( capitalize,  translate ) )
+
+                Handlebars.registerHelper( '_date',                     date )
+                Handlebars.registerHelper( 'D',                         date )
+
+                Handlebars.registerHelper( '_money',                    money )
+                Handlebars.registerHelper( 'M',                         money )
+
+
+                Handlebars.registerHelper( '_number',                   number )
+                Handlebars.registerHelper( 'N',                         number )
+
+                ##  Set the default locale and return promise
+                ##
                 return @setLocale( locale )
 
             else
                 console.error( '[LocaleManager] Already initialized' )
 
                 return Q.reject( '[LocaleManager] Already initialized' )
+
 
         setLocale: ( locale ) ->
 
