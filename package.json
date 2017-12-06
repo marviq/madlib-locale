@@ -66,6 +66,7 @@
     "handlebars": "<5"
   },
   "private": false,
+  "publishConfig": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marviq/madlib-locale.git"
