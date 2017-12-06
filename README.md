@@ -5,7 +5,7 @@
 
 A [`Handlebars.js`](https://github.com/wycats/handlebars.js#readme) helper collection providing keyed dictionary substitution and simple localization.
 
-It can format numbers, money, dates, and "translate" texts using the following helpers:
+It can format numbers, money, dates, and "translate" texts using the following packages:
 
 - [`accounting`](http://openexchangerates.github.io/accounting.js/)
 - [`moment`](http://momentjs.com/)
@@ -30,7 +30,7 @@ parameters:
     extended with `madlib-locale`'s helpers;
   * The locale, expressed  as a valid [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string; It'll designate a `.json` locale definition
     file by the same name that is to be loaded;
-  * An optional url base path to retrieve that- and any future locale definition files from; it defaults to `'/i18n'`;
+  * An optional url base path to retrieve that- and any future locale definition files from; it defaults to `'./i18n'`;
 
 ```coffee
 Handlebars      = require( 'handlebars/runtime' )
@@ -130,8 +130,8 @@ See also the [examples](https://github.com/marviq/madlib-locale/tree/develop/exa
 
       * ... with interpolation
 
-        These helpers also support [`node-polyglot`'s interpolation](http://airbnb.io/polyglot.js/#interpolation); any additional positional arguments will be
-        interpolated into the resulting dictionary value string as follows:
+        These helpers also support [`node-polyglot`'s interpolation](http://airbnb.io/polyglot.js/#interpolation); any additional _positional_ arguments will
+        be interpolated into the resulting dictionary value string as follows:
 
         ```json
         {
@@ -148,7 +148,7 @@ See also the [examples](https://github.com/marviq/madlib-locale/tree/develop/exa
 
       * ... with named parameters
 
-        Interpolations with named parameters are also possible:
+        Interpolations with _named_ instead of positional parameters are also possible:
 
         ```json
         {
@@ -181,15 +181,15 @@ See also the [examples](https://github.com/marviq/madlib-locale/tree/develop/exa
         {{T 'some.cars' smart_count=42 }}
         ```
 
-        _Note that even though `node-polyglot` does allow interpolation of the `smart_count` value, it will not receive a localized formatting treatment._
+        _Note that even though `node-polyglot` does allow interpolation of the `smart_count` value, it will not receive any localized formatting treatment._
 
   * Date: `D`
 
-    It takes two arguments:
+    This helper takes two arguments:
 
-      * a key into the [`formatting.datetime`](#definition-datetime) section of your locale definition file;
-      * ideally already a `Moment` instance, but any value that the [`Moment`](http://momentjs.com/docs/#/parsing/) constructor can grok as a date/time
-        argument should be fine.
+      * A key into the [`formatting.datetime`](#definition-datetime) section of your locale definition file, designating the specific format to use;
+      * Ideally a `Moment` instance, but any value that the [`Moment`](http://momentjs.com/docs/#/parsing/) constructor can grok as its argument should be
+        fine.
 
     ```hbs
     <dl>
@@ -205,7 +205,10 @@ See also the [examples](https://github.com/marviq/madlib-locale/tree/develop/exa
 
   * Number: `N`
 
-    It takes one or two arguments:
+    This helper takes one or two arguments:
+
+      * A number value to be formatted;
+      * An, optional, precision argument designating the specific number of decimals to format instead of the current locale definition's default.
 
     ```hbs
     <ol>
@@ -218,11 +221,11 @@ See also the [examples](https://github.com/marviq/madlib-locale/tree/develop/exa
 
   * Money
 
-    It takes two arguments:
+    This helper takes two arguments:
 
-      * a key into the [`formatting.money`](#definition-money) section of your locale definition file designating the specific currency to use or simply
-        `default` if the current locale defintion's default is desired;
-      * a number value to be formatted as an amount;
+      * A key into the [`formatting.money`](#definition-money) section of your locale definition file, designating the specific currency to use, or simply
+        `default` if the current locale defintion's default currenct is desired;
+      * A number value to be formatted as an amount, currency symbol included;
 
     ```hbs
     {{M 'euro' some.value.to.be.formatted.as.a.amount.of.money }}
