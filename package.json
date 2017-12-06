@@ -54,6 +54,7 @@
     "accounting",
     "format",
     "handlebars",
+    "handlebars-helpers",
     "i18n",
     "internationalization",
     "l10n",
