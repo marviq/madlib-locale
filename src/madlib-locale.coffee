@@ -6,7 +6,6 @@
             require( 'q' )
             require( 'madlib-console' )
             require( 'madlib-settings' )
-            require( 'madlib-object-utils' )
             require( 'madlib-xhr' )
             require( 'node-polyglot' )
             require( 'moment' )
@@ -19,7 +18,6 @@
             'q'
             'madlib-console'
             'madlib-settings'
-            'madlib-object-utils'
             'madlib-xhr'
             'node-polyglot'
             'moment'
@@ -28,7 +26,7 @@
             'underscore.string/capitalize'
         ], factory )
 
-)( ( Q, console, settings, objectUtils, XHR, Polyglot, Moment, accounting, _, capitalize ) ->
+)( ( Q, console, settings, XHR, Polyglot, Moment, accounting, _, capitalize ) ->
 
 
 
@@ -70,11 +68,7 @@
             ##  Create our polyglot instance
             ##  and load the default phrases
             ##
-            @polyglot       =
-                new Polyglot(
-                    locale:     objectUtils.getValue( 'name',    @locale, '??' )
-                    phrases:    objectUtils.getValue( 'phrases', @locale, {}   )
-                )
+            @polyglot       = new Polyglot()
 
             ##  Register the handlebars helper(s)
             ##
@@ -125,8 +119,8 @@
             if @cache[ locale ]?
 
                 @locale = @cache[ locale ]
-                @polyglot.locale(  objectUtils.getValue( 'name',    @locale, '??' ) )
-                @polyglot.replace( objectUtils.getValue( 'phrases', @locale, {}   ) )
+                @polyglot.locale(  @locale.name )
+                @polyglot.replace( @locale.phrases )
 
                 return Q( @locale )
 
@@ -154,8 +148,8 @@
                 #
                 @locale = data.response
 
-                @polyglot.locale(  objectUtils.getValue( 'name',    @locale, '??' ) )
-                @polyglot.replace( objectUtils.getValue( 'phrases', @locale, {}   ) )
+                @polyglot.locale(  @locale.name )
+                @polyglot.replace( @locale.phrases )
 
                 # Add the default locale to the cache
                 #
@@ -174,25 +168,25 @@
         date: ( type, date ) ->
             moment = Moment( date )
 
-            return moment.format( objectUtils.getValue( "formatting.datetime.#{type}", @locale ) )
+            return moment.format( @locale.formatting.datetime[ type ] )
 
         money: ( currency, amount ) ->
             # Choose the default currency if requested
             #
             if currency is 'default'
-                currency = objectUtils.getValue( 'formatting.money.default', @locale )
+                currency = @locale.formatting.money.default )
 
-            sign        = objectUtils.getValue( "formatting.money.#{currency}.sign",      @locale,  '?' )
-            precision   = objectUtils.getValue( "formatting.money.#{currency}.precision", @locale,  2   )
-            decimal     = objectUtils.getValue( 'formatting.number.decimalMarker',        @locale,  '.' )
-            thousand    = objectUtils.getValue( 'formatting.number.thousandMarker',       @locale,  ',' )
+            sign        = @locale.formatting.money[ currency ].sign
+            precision   = @locale.formatting.money[ currency ].precision
+            decimal     = @locale.formatting.number.decimalMarker
+            thousand    = @locale.formatting.number.thousandMarker
 
             return accounting.formatMoney( amount, sign, precision, thousand, decimal )
 
         number: ( number, precision ) ->
-            precision  ?= objectUtils.getValue( 'formatting.number.precision',      @locale, 3   )
-            decimal     = objectUtils.getValue( 'formatting.number.decimalMarker',  @locale, '.' )
-            thousand    = objectUtils.getValue( 'formatting.number.thousandMarker', @locale, ',' )
+            precision  ?= @locale.formatting.number.precision
+            decimal     = @locale.formatting.number.decimalMarker
+            thousand    = @locale.formatting.number.thousandMarker
 
             return accounting.formatNumber( number, precision, thousand, decimal )
 

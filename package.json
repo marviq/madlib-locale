@@ -11,7 +11,6 @@
   "dependencies": {
     "accounting": "<1",
     "madlib-console": "^0.1.4",
-    "madlib-object-utils": "^0.1.6",
     "madlib-settings": "^0.1.7",
     "madlib-xhr": "^0.1.21",
     "moment": "<3",
