@@ -3,53 +3,119 @@
 ( ( factory ) ->
     if typeof exports is 'object'
         module.exports = factory(
-            require( 'q' )
+            require( 'accounting' )
             require( 'madlib-console' )
             require( 'madlib-settings' )
             require( 'madlib-xhr' )
-            require( 'node-polyglot' )
             require( 'moment' )
-            require( 'accounting' )
+            require( 'node-polyglot' )
+            require( 'q' )
             require( 'underscore' )
             require( 'underscore.string/capitalize' )
         )
     else if typeof define is 'function' and define.amd
         define( [
-            'q'
+            'accounting'
             'madlib-console'
             'madlib-settings'
             'madlib-xhr'
-            'node-polyglot'
             'moment'
-            'accounting'
+            'node-polyglot'
+            'q'
             'underscore'
             'underscore.string/capitalize'
         ], factory )
-
-)( ( Q, console, settings, XHR, Polyglot, Moment, accounting, _, capitalize ) ->
-
+    return
+)((
+    accounting
+    console
+    settings
+    XHR
+    Moment
+    Polyglot
+    Q
+    _
+    capitalize
+) ->
 
 
     TAG = '[LocaleManager]'
 
 
     ###*
-    #   This module is used to handle translations, formatting and locale settings
+    #   A `Handlebars.js` helper collection providing keyed dictionary substitution and simple localization.
     #
     #   @author         mdoeswijk, rdewit
     #   @class          LocaleManager
     #   @constructor
-    #   @version        0.1
     ###
 
     class LocaleManager
 
-        locale:         undefined
+        ###*
+        #   A shared object caching already loaded locale definitions.
+        #
+        #   @property   cache
+        #   @type       Object
+        #   @protected
+        ###
+
         cache:          {}
+
+
+        ###*
+        #   Whether the `LocaleManager` has been `initialize()`-ed.
+        #
+        #   @property   initialized
+        #   @type       Boolean
+        #   @protected
+        #
+        #   @default    false
+        ###
+
         initialized:    false
+
+
+        ###*
+        #   The currently active locale definition.
+        #
+        #   @property   locale
+        #   @type       Object
+        #   @protected
+        ###
+
+        locale:         undefined
+
+
+        ###*
+        #   A url path to use as a base for loading locale definitions.
+        #
+        #   @property   localeLocation
+        #   @type       String
+        #   @protected
+        #
+        #   @default    './i18n'
+        ###
+
         localeLocation:  './i18n'
 
-        initialize: ( Handlebars, locale, localeLocation ) ->
+
+        ###*
+        #   Load the initial locale definition and extend the given `Handlebars` `runtime` with `madlib-locale`'s helpers.
+        #
+        #   @method     initialize
+        #
+        #   @param      {HandleBars}    runtime                         The `Handlebars` runtime to extend with `madlib-locale`'s helper collection once the
+        #                                                               locale definition has been loaded.
+        #   @param      {String}        localeName                      A valid [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string
+        #                                                               designating a `.json` locale definition by the same name that is to be loaded;
+        #   @param      {String}        [localeLocation='./i18n']       An optional url path to use as a base for loading this and any future locale
+        #                                                               definitions; defaults to `'./i18n'`.
+        #
+        #   @return     {Promise}                                       A promise to load the locale definition.
+        ###
+
+        initialize: ( runtime, localeName, localeLocation ) ->
 
             if @initialized
 
@@ -60,51 +126,44 @@
 
 
             @initialized    = true
-
-            ##  Set location if given
-            ##
             @localeLocation = localeLocation if localeLocation?
-
-            ##  Create our polyglot instance
-            ##  and load the default phrases
-            ##
             @polyglot       = new Polyglot()
 
             ##  Register the handlebars helper(s)
             ##
-            date            = _.bind( @date, @ )
-            money           = _.bind( @money, @ )
-            number          = _.bind( @number, @ )
-            translate       =
+            date            = @_date.bind( @ )
+            money           = @_money.bind( @ )
+            number          = @_number.bind( @ )
+            translate       = @_translate.bind( @ )
 
-                ( key, args..., meta ) =>
+            runtime.registerHelper( '_date',                    date )
+            runtime.registerHelper( 'D',                        date )
 
-                    interpolation   = if args.length then args else meta.hash
+            runtime.registerHelper( '_money',                   money )
+            runtime.registerHelper( 'M',                        money )
 
-                    @translate( key, interpolation )
+            runtime.registerHelper( '_number',                  number )
+            runtime.registerHelper( 'N',                        number )
 
+            runtime.registerHelper( '_translate',               translate   )
+            runtime.registerHelper( 't',                        translate   )
+            runtime.registerHelper( 'T', _.compose( capitalize, translate ) )
 
-            Handlebars.registerHelper( '_translate',                translate   )
-            Handlebars.registerHelper( 't',                         translate   )
-            Handlebars.registerHelper( 'T', _.compose( capitalize,  translate ) )
-
-            Handlebars.registerHelper( '_date',                     date )
-            Handlebars.registerHelper( 'D',                         date )
-
-            Handlebars.registerHelper( '_money',                    money )
-            Handlebars.registerHelper( 'M',                         money )
+            return @setLocale( localeName )
 
 
-            Handlebars.registerHelper( '_number',                   number )
-            Handlebars.registerHelper( 'N',                         number )
+        ###*
+        #   Reset to the specified locale definition, reusing a previously cached one when available
+        #
+        #   @method     setLocale
+        #
+        #   @param      {String}        localeName                      A valid [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string
+        #                                                               designating a `.json` locale definition by the same name that is to be loaded;
+        #
+        #   @return     {Promise}                                       A promise to load the locale definition.
+        ###
 
-            ##  Set the default locale and return promise
-            ##
-            return @setLocale( locale )
-
-
-
-        setLocale: ( locale ) ->
+        setLocale: ( localeName ) ->
 
             unless @initialized
 
@@ -114,27 +173,26 @@
                 return Q.reject( error )
 
 
-            # Check if the locale is in the cache
-            #
-            if @cache[ locale ]?
-
-                return Q( @_polyglotReset( @locale = @cache[ locale ] ) )
+            ##  Use cached if available.
+            ##
+            return Q( @_polyglotReset( @locale = locale ) ) if (( locale = @cache[ localeName ] ))?
 
 
-            # Load the new locale phrases
-            #
-            loaded =
+            ##  Load otherwise.
+            ##
+            loaded  =
 
                 new XHR( settings ).call(
 
-                    url:    "#{@localeLocation}/#{locale}.json"
-                    type:   'json'
                     method: 'GET'
+                    type:   'json'
+                    url:    "#{ @localeLocation }/#{ localeName }.json"
+
                 )
 
             loaded.catch( () ->
 
-                console.error( "#{ TAG } Failed to load locale #{ locale }")
+                console.error( "#{ TAG } Failed to load locale #{ localeName }")
 
                 return
             )
@@ -147,36 +205,110 @@
             )
 
 
-        getLocaleName: () ->
-            return @locale.name
+        ###*
+        #   Produce the current locale definition's [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string.
+        #
+        #   @method     getLocaleName
+        #
+        #   @return     {String}                                        The current [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string.
+        ###
 
-        translate: ( key, interpolation ) ->
-            @polyglot.t( key, interpolation )
+        getLocaleName: () -> @locale.name
 
-        date: ( type, date ) ->
-            moment = Moment( date )
 
-            return moment.format( @locale.formatting.datetime[ type ] )
+        ###*
+        #   Produce the localized `date` representation formatted according to the specified `format` key.
+        #
+        #   @method     _date
+        #   @protected
+        #
+        #   @param      {String}        format                          A key into the `formatting.datetime` section of the current locale definition.
+        #   @param      {Any}           date                            The `Moment` compatible value to format.
+        #
+        #   @return     {String}                                        The localized `date` representation string.
+        ###
 
-        money: ( currency, amount ) ->
-            # Choose the default currency if requested
-            #
-            if currency is 'default'
-                currency = @locale.formatting.money.default )
 
-            sign        = @locale.formatting.money[ currency ].sign
-            precision   = @locale.formatting.money[ currency ].precision
-            decimal     = @locale.formatting.number.decimalMarker
-            thousand    = @locale.formatting.number.thousandMarker
+        _date: ( type, date ) ->
 
-            return accounting.formatMoney( amount, sign, precision, thousand, decimal )
+            return Moment( date ).format( @locale.formatting.datetime[ type ] )
 
-        number: ( number, precision ) ->
-            precision  ?= @locale.formatting.number.precision
-            decimal     = @locale.formatting.number.decimalMarker
-            thousand    = @locale.formatting.number.thousandMarker
 
-            return accounting.formatNumber( number, precision, thousand, decimal )
+        ###*
+        #   Produce the localized `amount` representation according to the specified or `'default'` `currency`.
+        #
+        #   @method     _money
+        #   @protected
+        #
+        #   @param      {String}        currency                        A key into the `formatting.money` section of the current locale definition designating
+        #                                                               the specific currency to use or sinply the current locale definition's `'default'`
+        #                                                               currency.
+        #   @param      {Number}        amount                          The amount to format.
+        #
+        #   @return     {String}                                        The localized `amount` representation string.
+        ###
+
+        _money: ( currency, amount ) ->
+
+            formatting  = @locale.formatting
+            number      = formatting.number
+            money       = formatting.money
+            currency    = money[ if 'default' is currency then money.default else currency ]
+
+            return accounting.formatMoney(
+
+                amount
+                currency.sign
+                currency.precision
+                number.decimalMarker
+                number.thousandMarker
+            )
+
+
+        ###*
+        #   Produce the localized `number` representation with optional `precision`.
+        #
+        #   @method     _number
+        #   @protected
+        #
+        #   @param      {Number}        number                          The number to format
+        #   @param      {Number}        [precision]                     The optional number of decimals to include; defaults to the precision specified in the
+        #                                                               current locale definition.
+        #
+        #   @return     {String}                                        The localized `number` representation string.
+        ###
+
+        _number: ( number, precision ) ->
+
+            formatting  = @locale.formatting.number
+
+            return accounting.formatNumber(
+
+                number
+                precision ? formatting.precision
+                formatting.decimalMarker
+                formatting.thousandMarker
+            )
+
+
+        ###*
+        #   Produce the specified, possibly interpolated, entry from `@polyglot`'s `phrases` dictionary.
+        #
+        #   @method     _translate
+        #   @protected
+        #
+        #   @param      {String}        key                             The key designating the entry to use from the current locale definition's `phrases`
+        #                                                               dictionary.
+        #   @param      {Any}           [...args]                       A variable number of positional arguments to interpolate into that entry.
+        #   @param      {Object}        meta                            The Handlebars `options` argument to helpers.
+        #   @param      {Object}        meta.hash                       Any named parameters to interpolate instead if no positional arguments were given.
+        #
+        #   @return     {String}                                        The, possibly interpolated, entry from `@polyglot`'s `phrases` dictionary.
+        ###
+
+        _translate: ( key, args..., meta ) ->
+
+            return @polyglot.t( key, if args.length then args else meta.hash )
 
 
         ###*
@@ -199,8 +331,8 @@
 
 
 
-    # We only need one translator
-    #
-    localeManager = new LocaleManager()
-    return localeManager
+    ##  Export singleton.
+    ##
+    return new LocaleManager()
+
 )
