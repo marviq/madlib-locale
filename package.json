@@ -52,12 +52,17 @@
   ],
   "homepage": "https://github.com/marviq/madlib-locale#readme",
   "keywords": [
+    "accounting",
+    "format",
     "handlebars",
     "i18n",
+    "internationalization",
+    "l10n",
+    "localization",
+    "moment",
+    "polyglot",
     "translate",
-    "accounting",
-    "dateformat",
-    "moment"
+    "translation"
   ],
   "license": "BSD-3-Clause",
   "main": "dist/lib/madlib-locale.js",
