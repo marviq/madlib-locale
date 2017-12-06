@@ -31,6 +31,10 @@
 )( ( Q, console, settings, objectUtils, XHR, Polyglot, Moment, accounting, _, capitalize ) ->
 
 
+
+    TAG = '[LocaleManager]'
+
+
     ###*
     #   This module is used to handle translations, formatting and locale settings
     #
@@ -51,7 +55,7 @@
 
             if @initialized
 
-                error   = '[LocaleManager] Already initialized'
+                error       = "#{ TAG } Already initialized."
 
                 console.error( error )
                 return Q.reject( error )
@@ -110,7 +114,7 @@
 
             unless @initialized
 
-                error   = '[LocaleManager] Tried to set locale before initializion.'
+                error   = "#{ TAG } Tried to set locale before initialization."
 
                 console.error( error )
                 return Q.reject( error )
@@ -139,7 +143,7 @@
 
             loaded.catch( () ->
 
-                console.error( "[i18n] Failed to load locale #{locale}")
+                console.error( "#{ TAG } Failed to load locale #{ locale }")
 
                 return
             )
