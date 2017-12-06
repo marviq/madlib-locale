@@ -5,37 +5,42 @@
   "bugs": {
     "url": "https://github.com/marviq/madlib-locale/issues"
   },
+  "config": {
+    "dist": "dist/"
+  },
   "dependencies": {
-    "accounting": "^0.4.1",
+    "accounting": "<1",
     "madlib-console": "^0.1.4",
-    "madlib-object-utils": "^0.1.6",
     "madlib-settings": "^0.1.7",
     "madlib-xhr": "^0.1.21",
-    "moment": "^2.17.1",
-    "node-polyglot": "^2.2.2",
-    "q": "^1.4.1",
+    "moment": "<3",
+    "node-polyglot": "<3",
+    "q": "^1.5.1",
     "underscore": "^1.8.3",
     "underscore.string": "^3.3.4"
   },
   "description": "A `Handlebars` helper collection providing keyed dictionary substitution and simple localization.",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "coffee-script": "^1.12.4",
+    "chai": "^4.1.2",
+    "coffeescript": "^2.0.3",
     "grunt": "^1.0.1",
-    "grunt-coffee-jshint": "^1.0.0",
+    "grunt-coffee-jshint": "^2.0.0",
     "grunt-coffeelint": "0.0.16",
     "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-coffee": "^1.0.0",
+    "grunt-contrib-coffee": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-contrib-yuidoc": "^1.0.0",
-    "grunt-mocha-test": "^0.13.2",
-    "handlebars": "^4.0.6",
-    "mocha": "^3.2.0",
-    "standard-version": "^4.0.0"
+    "grunt-mocha-test": "^0.13.3",
+    "handlebars": "<5",
+    "mocha": "^4.0.1",
+    "standard-version": "^4.2.0"
   },
   "directories": {
     "doc": "dist/doc",
     "lib": "dist/lib"
+  },
+  "engines": {
+    "npm": ">=5"
   },
   "files": [
     "AUTHORS",
@@ -46,12 +51,17 @@
   ],
   "homepage": "https://github.com/marviq/madlib-locale#readme",
   "keywords": [
+    "accounting",
+    "format",
     "handlebars",
     "i18n",
+    "internationalization",
+    "l10n",
+    "localization",
+    "moment",
+    "polyglot",
     "translate",
-    "accounting",
-    "dateformat",
-    "moment"
+    "translation"
   ],
   "license": "BSD-3-Clause",
   "main": "dist/lib/madlib-locale.js",
@@ -60,6 +70,7 @@
     "handlebars": "<5"
   },
   "private": false,
+  "publishConfig": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marviq/madlib-locale.git"
@@ -69,9 +80,10 @@
     "dist": "true",
     "prebuild": "rm -rf \"${npm_package_config_dist}\"",
     "predist": "npm run build",
-    "prepublish": "npm run dist",
+    "prepublishOnly": "npm run dist",
+    "refresh": "set -x; npm prune && npm install && npm dedupe",
     "release": "standard-version",
     "test": "command -v grunt > /dev/null || { echo >&2 'It appears that \"grunt\" is not installed.  Consider running \"[sudo ]npm install -g grunt-cli\" first.'; exit ; } && grunt test"
   },
-  "version": "0.3.1"
+  "version": "0.4.0"
 }

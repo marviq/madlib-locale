@@ -3,30 +3,37 @@
 [![npm version](https://badge.fury.io/js/madlib-locale.svg)](http://badge.fury.io/js/madlib-locale)
 [![David dependency drift detection](https://david-dm.org/marviq/madlib-locale.svg)](https://david-dm.org/marviq/madlib-locale)
 
-A `Handlebars` helper collection providing keyed dictionary substitution and simple localization.
+A [`Handlebars.js`](https://github.com/wycats/handlebars.js#readme) helper collection providing keyed dictionary substitution and simple localization.
 
-It can format dates, numbers, money and "translate" texts.  Next to that it will help you load the locale file (async) when changing the `language` setting.
+It can format numbers, money, dates, and "translate" texts using the following packages:
 
-The module uses the following modules to achieve all of this:
 - [`accounting`](http://openexchangerates.github.io/accounting.js/)
 - [`moment`](http://momentjs.com/)
-- [`node-polyglot`](http://airbnb.github.com/polyglot.js)
+- [`node-polyglot`](http://airbnb.io/polyglot.js/)
+
 
 ## Installing
 
-The module is available in the global NPM:
-
 ```shell
+npm install handlebars --save
 npm install madlib-locale --save
 ```
 
+
 ## Using
 
-The module will export a singleton object.  Before rendering any templates you will first need to call `initialize()`, passing in the `Handlebars` runtime reference to extend with `madlib-locale`'s helpers.  This also allows you to set the default locale.  The `initialize()` invocation will return a [(Q) `Promise`](https://github.com/kriskowal/q) that'll resolve when the locale file has been loaded.
+`madlib-locale`'s single export is the `localeManager` object, which will need to be `initialize( ... )`-ed before use. `initialize( ... )` returns a
+[(Q) `Promise`](https://github.com/kriskowal/q#readme) that'll be fullfilled when the specified locale's definition file has been loaded; it takes in three
+parameters:
 
-Optionally you can pass a third parameter which is the `localeLocation`.  This defaults to `'/i18n'`.  If you want to put your locale files in a different folder, pass this parameter.
+  * The [`Handlebars`-](http://handlebarsjs.com/installation.html#npm) (or [`hbsfy` runtime](https://github.com/epeli/node-hbsfy#helpers) that is to be
+    extended with `madlib-locale`'s helpers;
+  * The locale, expressed  as a valid [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string; It'll designate a `.json` locale definition
+    file by the same name that is to be loaded;
+  * An optional url base path to retrieve that- and any future locale definition files from; it defaults to `'./i18n'`;
 
 ```coffee
+Handlebars      = require( 'handlebars/runtime' )
 localeManager   = require( 'madlib-locale' )
 
 localeManager
@@ -34,7 +41,9 @@ localeManager
     .then(
 
         () ->
-            ## Ready to render templates using the helper functions
+
+            ##  Ready to render templates using the helper functions
+
             return
 
         () ->
@@ -45,17 +54,21 @@ localeManager
     .done()
 ```
 
-### Change the language
 
-You can change the current language at any time by calling `setLocale()` on the `localeManager`; it, too, will return a `Promise`.  Once resolved, a re-render of your templates will ensure they'll be in the new language.
+### Change the locale
+
+The locale can be changed at any time through invoking `localeManager.setLocale( ... )`; it, too, will return a `Promise`.  Once resolved, a re-rendering
+of your templates will ensure they'll be in the new locale.
 
 ```coffee
 localeManager
-    .setLocale( Handlebars, 'en-GB' )
+    .setLocale( 'nl-NL' )
     .then(
 
         () ->
-            ## Ready to render templates using the helper functions
+
+            ##  Ready to re-render templates using the helper functions
+
             return
 
         () ->
@@ -64,186 +77,172 @@ localeManager
     )
 ```
 
-### Get the current language name
 
-To retrieve the current language name:
+### Get the current locale name
+
+To retrieve the current locale name:
 
 ```coffee
-localeName      = localeManager.getLocaleName()
+    console.log( "Current locale: #{ localeManager.getLocaleName() }" )
 ```
 
-### How to set up the locale file
 
-See the [examples](https://github.com/marviq/madlib-locale/blob/develop/examples/) on GitHub.
+### Set up a locale definition file
 
-### How to use all of this in your Handlebar templates
+At its top level, a locale definition file has a `name` string, and `phrases`- and `formatting` objects.
+
+  * `name` is expected to be a valid [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string.
+    This is also the name of the file (excluding the `.json` filename extension);
+  * <a name="definition-phrases">`phrases`</a> is any object acceptable as a phrases dictionary to [`node-polyglot`](http://airbnb.io/polyglot.js/#translation);
+  * `formatting` should contain three further sections:
+      * <a name="definition-datetime">`datetime`</a> is a keyword-to-[`Moment` `format( ... )` argument](http://momentjs.com/docs/#/displaying/format/)-mapping.
+        The examples unimaginatively sport descriptive identifying keywords like `date` and `datetime` but you can name them whatever you like;
+      * <a name="definition-money">`money`</a>, similary, is a
+        keyword-to-[`Accounting` `formatMoney( ... )` arguments](http://openexchangerates.github.io/accounting.js/#methods)-mapping, expecting only `sign`
+        (currency symbol) and `precision` arguments. The arguments for thousands- and decimal separator markers being taken from the `number` definition below;
+      * <a name="definition-number">`number`</a> is an object defining the `decimalMarker`, `thousandMarker` and (default) `precision` arguments to the
+        [`Accounting` `formatNumber( ... )`](http://openexchangerates.github.io/accounting.js/#methods) method;
 
 
-  * Translate
+See also the [examples](https://github.com/marviq/madlib-locale/tree/develop/examples/) on GitHub.
 
-    Pass the key of the phrase in the localeFile:
+
+### Use from your Handlebars templates
+
+  * Translate: `t` or `T`
+
+      * ... without interpolation
+
+        These helpers take one argument which should be a key into the [`phrases` dictionary](#definition-phrases) in your locale
+        definition file:
+
+        ```hbs
+        <ul>
+            <li>{{T 'an.entry.in.your.phrases.dictionary'}}</li>
+            <li>{{t 'another.entry.in.your.phrases.dictionary'}}</li>
+        </ul>
+        ```
+
+        The difference between `T` and `t` is that the former additionally does
+        [first-letter capitalization](https://github.com/epeli/underscore.string#capitalizestring-lowercaserestfalse--string) of the dictionary's value.
+
+        A longer form alternative to `t` which `madlib-locale` has historically provided is `_translate`. It does not have a capitalization variant.
+
+      * ... with interpolation
+
+        These helpers also support [`node-polyglot`'s interpolation](http://airbnb.io/polyglot.js/#interpolation); any additional _positional_ arguments will
+        be interpolated into the resulting dictionary value string as follows:
+
+        ```json
+        {
+            "phrases": {
+                "the.phrases.dictionary.values.can.be.X.with.Y":    "translation strings can be %{0} with anything, like: \"%{1}\""
+            ,   "can.be.interpolated":                              "interpolated"
+            }
+        }
+        ```
+
+        ```hbs
+        {{T 'the.phrases.dictionary.values.can.be.X.with.Y' (t 'can.be.interpolated') some.example.value }}
+        ```
+
+      * ... with named parameters
+
+        Interpolations with _named_ instead of positional parameters are also possible:
+
+        ```json
+        {
+            "phrases": {
+                "the.phrases.dictionary.values.can.be.X.with.Y":    "translation strings can be %{foo} with anything, like: \"%{bar}\""
+            ,   "can.be.interpolated":                              "interpolated"
+            }
+        }
+        ```
+
+        ```hbs
+        {{T 'the.phrases.dictionary.values.can.be.X.with.Y' foo=(t 'can.be.interpolated') bar=some.example.value }}
+        ```
+
+      * ... with pluralization
+
+        Using the special named parameter `smart_count` you can leverage [`node-polyglot`'s pluralization](http://airbnb.io/polyglot.js/#pluralization)
+        mechanism:
+
+        ```json
+        {
+            "phrases": {
+                "some.mice":    "a mouse |||| some mice"
+            }
+        }
+        ```
+
+        ```hbs
+        {{T 'some.cars' smart_count=1 }}
+        {{T 'some.cars' smart_count=42 }}
+        ```
+
+        _Note that even though `node-polyglot` does allow interpolation of the `smart_count` value, it will not receive any localized formatting treatment._
+
+  * Date: `D`
+
+    This helper takes two arguments:
+
+      * A key into the [`formatting.datetime`](#definition-datetime) section of your locale definition file, designating the specific format to use;
+      * Ideally a `Moment` instance, but any value that the [`Moment`](http://momentjs.com/docs/#/parsing/) constructor can grok as its argument should be
+        fine.
 
     ```hbs
-    {{_translate 'i18n-date'}}
+    <dl>
+        <dt>{{T 'the.date'}}</dt>
+        <dd>{{D 'date' some.moment.compatible.value.to.be.formatted.as.a.date.string }}</dd>
+
+        <dt>{{T 'the.datetime'}}</dt>
+        <dd>{{D 'datetime' some.moment.compatible.value.to.be.formatted.as.a.date-and-time.string }}</dd>
+    </ul>
     ```
 
-  * Date
+    A longer form alternative to `D` which `madlib-locale` has historically provided is `_date`.
 
-    Pass the type of formatting as defined in localeFile and the date, this can be any format as long as MomentJS can parse it:
+  * Number: `N`
+
+    This helper takes one or two arguments:
+
+      * A number value to be formatted;
+      * An, optional, precision argument designating the specific number of decimals to format instead of the current locale definition's default.
 
     ```hbs
-    {{_date 'date' date }}
+    <ol>
+        <li>{{N some.value.to.be.formatted.as.a.number.with.default.precision }}</li>
+        <li>{{N some.value.to.be.formatted.as.a.number.with.alternative.precision 7 }}</li>
+    <ol>
     ```
 
-  * Number
-
-    Pass the number to format:
-
-    ```hbs
-    {{_number number }}
-    ```
-
-    Pass the number to format with alternative precision:
-
-    ```hbs
-    {{_number number 2 }}
-    ```
+    A longer form alternative to `N` which `madlib-locale` has historically provided is `_number`.
 
   * Money
 
-    Pass the type as defined in localeFile and the money/amount value:
+    This helper takes two arguments:
+
+      * A key into the [`formatting.money`](#definition-money) section of your locale definition file, designating the specific currency to use, or simply
+        `default` if the current locale defintion's default currenct is desired;
+      * A number value to be formatted as an amount, currency symbol included;
 
     ```hbs
-    {{_money 'euro' money}}
+    {{M 'euro' some.value.to.be.formatted.as.a.amount.of.money }}
     ```
+
+    A longer form alternative to `M` which `madlib-locale` has historically provided is `_money`.
 
 
 ## Contributing
 
-### Prerequisites
-
-  * [npm and node](https://nodejs.org/en/download/)
-  * [git flow](https://github.com/nvie/gitflow/wiki/Installation)
-  * [jq](https://stedolan.github.io/jq/download/)
-  * [grunt](http://gruntjs.com/getting-started#installing-the-cli)
-
-    ```bash
-    $ [sudo ]npm install -g grunt-cli
-    ```
-
-
-### Setup
-
-Clone this repository somewhere, switch to it, then:
-
-```bash
-$ git config commit.template ./.gitmessage
-$ git checkout master
-$ git checkout develop
-$ git flow init -d
-$ npm install
-```
-
-This will:
-
-  * Set up [a helpful reminder](.gitmessage) of how to make [a good commit message](#commit-message-format-discipline).  If you adhere to this, then a
-    detailed, meaningful [CHANGELOG](CHANGELOG.md) can be constructed automatically;
-  * Ensure you have local `master` and `develop` branches tracking their respective remote counterparts;
-  * Set up the git flow [branching model](#branching-model) with default branch names;
-  * Install all required dependencies;
-  * The latter command will also invoke `grunt` (no args) for you, creating `lib` and `doc` build artifacts into `./dist`;
-
-
-### Build
-
-Most of the time you just want to invoke
-
-```bash
-grunt
-```
-
-This will build you the `lib` and `doc` artifacts into `./dist`, ready for [publication](#publish).
-
-
-### Test
-
-
-### Commit
-
-#### Branching Model
-
-This project uses [`git flow`](https://github.com/nvie/gitflow#readme).  Here's a quick [cheat sheet](http://danielkummer.github.io/git-flow-cheatsheet/).
-
-
-#### Commit Message Format Discipline
-
-This project uses [`conventional-changelog/standard-version`](https://github.com/conventional-changelog/standard-version) for automatic versioning and
-[CHANGELOG](CHANGELOG.md) management.
-
-To make this work, *please* ensure that your commit messages adhere to the
-[Commit Message Format](https://github.com/bcoe/conventional-changelog-standard/blob/master/convention.md#commit-message-format).  Setting your `git config` to
-have the `commit.template` as referenced below will help you with [a detailed reminder](.gitmessage) of how to do this on every `git commit`.
-
-```bash
-$ git config commit.template ./.gitmessage
-```
-
-
-### Release
-
-  * Determine what your next [semver](https://docs.npmjs.com/getting-started/semantic-versioning#semver-for-publishers) `<version>` should be:
-
-    ```bash
-    $ version="<version>"
-    ```
-
-  * Create and checkout a `release/v<version>` branch off of `develop`:
-
-    ```bash
-    $ git flow release start "v${version}"
-    ```
-
-  * Bump the package's `.version`, update the [CHANGELOG](./CHANGELOG.md), commit these, and tag the commit as `v<version>`:
-
-    ```bash
-    $ npm run release
-    ```
-
-  * If all is well this new `version` **should** be identical to your intended `<version>`:
-
-    ```bash
-    $ jq ".version == \"${version}\"" package.json
-    ```
-
-    *If this is not the case*, then either your assumptions about what changed are wrong, or (at least) one of your commits did not adhere to the
-    [Commit Message Format Discipline](#commit-message-format-discipline); **Abort the release, and sort it out first.**
-
-  * Merge `release/v<version>` back into both `develop` and `master`, checkout `develop` and delete `release/v<version>`:
-
-    ```bash
-    $ git flow release finish -n "v${version}"
-    ```
-
-    Note that contrary to vanilla `git flow`, the merge commit into `master` will *not* have been tagged (that's what the
-    [`-n`](https://github.com/nvie/gitflow/wiki/Command-Line-Arguments#git-flow-release-finish--fsumpkn-version) was for).  This is done because
-    `npm run release` has already tagged its own commit.
-
-    I believe that in practice, this won't make a difference for the use of `git flow`; and ensuring it's done the other way round instead would render the use
-    of `conventional-changelog` impossible.
-
-
-### Publish
-
-```bash
-git checkout v<version>
-npm publish
-git checkout develop
-```
+See [CONTRIBUTING](./CONTRIBUTING.md).
 
 
 ## ChangeLog
 
-See [CHANGELOG](CHANGELOG.md) for versions >`0.2.1`; For older versions, refer to the [releases on GitHub](https://github.com/marviq/madlib-locale/releases) for a detailed log of changes.
+See [CHANGELOG](./CHANGELOG.md) for versions >`0.2.1`;  For older versions, refer to the
+[releases on GitHub](https://github.com/marviq/madlib-locale/releases?after=v0.3.0) for a detailed log of changes.
 
 
 ## License
