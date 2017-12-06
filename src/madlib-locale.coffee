@@ -1,3 +1,5 @@
+'use strict'
+
 ( ( factory ) ->
     if typeof exports is 'object'
         module.exports = factory(
@@ -28,7 +30,6 @@
 
 )( ( Q, console, settings, objectUtils, XHR, Polyglot, Moment, accounting, _, capitalize ) ->
 
-    'use strict'
 
     ###*
     #   This module is used to handle translations, formatting and locale settings
