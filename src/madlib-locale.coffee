@@ -116,47 +116,49 @@
                 return Q.reject( error )
 
 
-            deferred = Q.defer()
-
             # Check if the locale is in the cache
             #
             if @cache[ locale ]?
+
                 @locale = @cache[ locale ]
                 @polyglot.locale(  objectUtils.getValue( 'name',    @locale, '??' ) )
                 @polyglot.replace( objectUtils.getValue( 'phrases', @locale, {}   ) )
 
-                deferred.resolve()
-            else
-                # Load the new locale phrases
-                #
-                xhr = new XHR( settings )
-                xhr.call(
+                return Q( @locale )
+
+            # Load the new locale phrases
+            #
+            loaded =
+
+                new XHR( settings ).call(
+
                     url:    "#{@localeLocation}/#{locale}.json"
                     type:   'json'
                     method: 'GET'
                 )
-                .then( ( data ) =>
-                    # Set polyglot locale and phrases on success
-                    #
-                    @locale = data.response
 
-                    @polyglot.locale(  objectUtils.getValue( 'name',    @locale, '??' ) )
-                    @polyglot.replace( objectUtils.getValue( 'phrases', @locale, {}   ) )
+            loaded.catch( () ->
 
-                    # Add the default locale to the cache
-                    #
-                    @cache[ @locale.name ] = @locale
+                console.error( "[i18n] Failed to load locale #{locale}")
 
-                    deferred.resolve()
+                return
+            )
 
-                ,   ( error ) ->
-                    console.error( "[i18n] Failed to load locale #{locale}")
-                    deferred.reject( error )
-                )
-                .done()
+            return loaded.then( ( data ) =>
 
-            return deferred.promise
+                # Set polyglot locale and phrases on success
+                #
+                @locale = data.response
 
+                @polyglot.locale(  objectUtils.getValue( 'name',    @locale, '??' ) )
+                @polyglot.replace( objectUtils.getValue( 'phrases', @locale, {}   ) )
+
+                # Add the default locale to the cache
+                #
+                @cache[ @locale.name ] = @locale
+
+                return @locale
+            )
 
 
         getLocaleName: () ->
