@@ -118,11 +118,8 @@
             #
             if @cache[ locale ]?
 
-                @locale = @cache[ locale ]
-                @polyglot.locale(  @locale.name )
-                @polyglot.replace( @locale.phrases )
+                return Q( @_polyglotReset( @locale = @cache[ locale ] ) )
 
-                return Q( @locale )
 
             # Load the new locale phrases
             #
@@ -144,18 +141,9 @@
 
             return loaded.then( ( data ) =>
 
-                # Set polyglot locale and phrases on success
-                #
-                @locale = data.response
+                locale  = data.response
 
-                @polyglot.locale(  @locale.name )
-                @polyglot.replace( @locale.phrases )
-
-                # Add the default locale to the cache
-                #
-                @cache[ @locale.name ] = @locale
-
-                return @locale
+                return @_polyglotReset( @locale = @cache[ locale.name ] = locale )
             )
 
 
@@ -189,6 +177,27 @@
             thousand    = @locale.formatting.number.thousandMarker
 
             return accounting.formatNumber( number, precision, thousand, decimal )
+
+
+        ###*
+        #   Reset our `@polyglot` to a new locale definition.
+        #
+        #   @method     _polyglotReset
+        #   @protected
+        #
+        #   @param      {Object}        locale                          A locale definition
+        ###
+
+        _polyglotReset: ( locale ) ->
+
+            { polyglot }    = @
+
+            polyglot.locale(  locale.name       )
+            polyglot.replace( locale.phrases    )
+
+            return locale
+
+
 
     # We only need one translator
     #
