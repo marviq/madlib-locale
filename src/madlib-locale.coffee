@@ -43,7 +43,13 @@
 
 
     ###*
-    #   A `Handlebars.js` helper collection providing keyed dictionary substitution and simple localization.
+    #   A [`Handlebars.js`](https://github.com/wycats/handlebars.js#readme) helper collection providing keyed dictionary substitution and simple localization.
+    #
+    #   Wielding the powers of:
+    #
+    #     - [`accounting`](https://github.com/openexchangerates/accounting.js#readme)
+    #     - [`moment`](https://github.com/moment/moment/#readme)
+    #     - [`node-polyglot`](https://github.com/airbnb/polyglot.js#readme)
     #
     #   @author         mdoeswijk, rdewit
     #   @class          LocaleManager
@@ -106,11 +112,11 @@
         #   @method     initialize
         #
         #   @param      {HandleBars}    runtime                         The `Handlebars` runtime to extend with `madlib-locale`'s helper collection once the
-        #                                                               locale definition has been loaded.
+        #                                                               locale definition has been loaded;
         #   @param      {String}        localeName                      A valid [BCP 47 language tag](https://tools.ietf.org/html/bcp47#section-2) string
         #                                                               designating a `.json` locale definition by the same name that is to be loaded;
         #   @param      {String}        [localeLocation='./i18n']       An optional url path to use as a base for loading this and any future locale
-        #                                                               definitions; defaults to `'./i18n'`.
+        #                                                               definitions; defaults to `'./i18n'`;
         #
         #   @return     {Promise}                                       A promise to load the locale definition.
         ###
@@ -217,13 +223,13 @@
 
 
         ###*
-        #   Produce the localized `date` representation formatted according to the specified `format` key.
+        #   Produce the localized `date` representation string, formatted according to the specified `format` key.
         #
         #   @method     _date
         #   @protected
         #
-        #   @param      {String}        format                          A key into the `formatting.datetime` section of the current locale definition.
-        #   @param      {Any}           date                            The `Moment` compatible value to format.
+        #   @param      {String}        format                          A key into the `formatting.datetime` section of the current locale definition;
+        #   @param      {Any}           date                            The `Moment` compatible value to format;
         #
         #   @return     {String}                                        The localized `date` representation string.
         ###
@@ -235,15 +241,15 @@
 
 
         ###*
-        #   Produce the localized `amount` representation according to the specified or `'default'` `currency`.
+        #   Produce the localized `amount` representation string, formatted according to the specified- or `'default'` `currency` key.
         #
         #   @method     _money
         #   @protected
         #
         #   @param      {String}        currency                        A key into the `formatting.money` section of the current locale definition designating
         #                                                               the specific currency to use or sinply the current locale definition's `'default'`
-        #                                                               currency.
-        #   @param      {Number}        amount                          The amount to format.
+        #                                                               currency;
+        #   @param      {Number}        amount                          The amount to format;
         #
         #   @return     {String}                                        The localized `amount` representation string.
         ###
@@ -271,9 +277,9 @@
         #   @method     _number
         #   @protected
         #
-        #   @param      {Number}        number                          The number to format
+        #   @param      {Number}        number                          The number to format;
         #   @param      {Number}        [precision]                     The optional number of decimals to include; defaults to the precision specified in the
-        #                                                               current locale definition.
+        #                                                               current locale definition;
         #
         #   @return     {String}                                        The localized `number` representation string.
         ###
@@ -292,18 +298,19 @@
 
 
         ###*
-        #   Produce the specified, possibly interpolated, entry from `@polyglot`'s `phrases` dictionary.
+        #   Produce the specified, possibly interpolated, entry from the current locale definition's `phrases` dictionary.
         #
         #   @method     _translate
         #   @protected
         #
         #   @param      {String}        key                             The key designating the entry to use from the current locale definition's `phrases`
-        #                                                               dictionary.
-        #   @param      {Any}           [...args]                       A variable number of positional arguments to interpolate into that entry.
-        #   @param      {Object}        meta                            The Handlebars `options` argument to helpers.
-        #   @param      {Object}        meta.hash                       Any named parameters to interpolate instead if no positional arguments were given.
+        #                                                               dictionary;
+        #   @param      {Any}           [...args]                       A variable number of positional arguments to interpolate into that entry;
+        #   @param      {Object}        meta                            The Handlebars `options` argument to helpers;
+        #   @param      {Object}        meta.hash                       Any named parameters to interpolate instead, if no positional arguments were given;
         #
-        #   @return     {String}                                        The, possibly interpolated, entry from `@polyglot`'s `phrases` dictionary.
+        #   @return     {String}                                        The, possibly interpolated, entry from the current locale definition's `phrases`
+        #                                                               dictionary.
         ###
 
         _translate: ( key, args..., meta ) ->
@@ -317,7 +324,7 @@
         #   @method     _polyglotReset
         #   @protected
         #
-        #   @param      {Object}        locale                          A locale definition
+        #   @param      {Object}        locale                          A locale definition;
         ###
 
         _polyglotReset: ( locale ) ->
