@@ -13,7 +13,7 @@
     "madlib-console": "^0.1.4",
     "madlib-settings": "^0.1.7",
     "madlib-xhr": "^0.1.21",
-    "moment": "<3",
+    "moment": ">=2.19.3 <3",
     "node-polyglot": "<3",
     "q": "^1.5.1",
     "underscore": "^1.8.3",
