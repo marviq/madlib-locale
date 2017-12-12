@@ -266,8 +266,8 @@
                 amount
                 currency.sign
                 currency.precision
-                number.decimalMarker
                 number.thousandMarker
+                number.decimalMarker
             )
 
 
@@ -292,8 +292,8 @@
 
                 number
                 precision ? formatting.precision
-                formatting.decimalMarker
                 formatting.thousandMarker
+                formatting.decimalMarker
             )
 
 
