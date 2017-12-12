@@ -22,7 +22,7 @@
   "description": "A `Handlebars` helper collection providing keyed dictionary substitution and simple localization.",
   "devDependencies": {
     "chai": "^4.1.2",
-    "coffeescript": "^2.0.3",
+    "coffeescript": "^2.1.0",
     "grunt": "^1.0.1",
     "grunt-coffee-jshint": "^2.0.0",
     "grunt-coffeelint": "0.0.16",
@@ -59,6 +59,7 @@
     "internationalization",
     "l10n",
     "localization",
+    "marviq",
     "moment",
     "polyglot",
     "translate",
@@ -86,5 +87,5 @@
     "release": "standard-version",
     "test": "command -v grunt > /dev/null || { echo >&2 'It appears that \"grunt\" is not installed.  Consider running \"[sudo ]npm install -g grunt-cli\" first.'; exit ; } && grunt test"
   },
-  "version": "0.4.1"
+  "version": "0.4.2"
 }
