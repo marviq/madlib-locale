@@ -22,7 +22,7 @@
   "description": "A `Handlebars` helper collection providing keyed dictionary substitution and simple localization.",
   "devDependencies": {
     "chai": "^4.1.2",
-    "coffeescript": "^2.0.3",
+    "coffeescript": "^2.1.0",
     "grunt": "^1.0.1",
     "grunt-coffee-jshint": "^2.0.0",
     "grunt-coffeelint": "0.0.16",
