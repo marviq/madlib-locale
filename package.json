@@ -21,6 +21,8 @@
   },
   "description": "A `Handlebars` helper collection providing keyed dictionary substitution and simple localization.",
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "coffeescript": "^2.1.1",
     "grunt": "^1.0.1",
