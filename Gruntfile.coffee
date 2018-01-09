@@ -120,6 +120,12 @@ module.exports = ( grunt ) ->
             ##  Non-debugging build
             ##
             lib_dist:
+                options:
+                    transpile:
+                        presets: [
+                                        'env'
+                        ]
+
                 files: [
                     expand:             true                            ##  Enable dynamic expansion.
 
@@ -135,6 +141,10 @@ module.exports = ( grunt ) ->
             lib_debug:
                 options:
                     sourceMap:          true
+                    transpile:
+                        presets: [
+                                        'env'
+                        ]
 
                 files:                  '<%= coffee.lib_dist.files %>'
 
