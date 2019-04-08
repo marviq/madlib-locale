@@ -11,8 +11,8 @@ module.exports = ( grunt ) ->
         ##  ------------------------------------------------
 
         ##
-        ##  Contents of npm's 'package.json' file as '<%= npm.pkg.* %>'
-        ##  Installed dependencies of npm's 'package.json' file as '<%= npm.installed.* %>'
+        ##  Contents of npm's 'package.json' file as `<%= npm.pkg.* %>`
+        ##  Installed dependencies of npm's 'package.json' file as `<%= npm.installed.* %>`
         ##
 
         npm:
@@ -21,7 +21,7 @@ module.exports = ( grunt ) ->
 
 
         ##
-        ##  Local data as '<%= build.* %>'
+        ##  Local data as `<%= build.* %>`
         ##
 
         build:
