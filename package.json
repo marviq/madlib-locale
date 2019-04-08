@@ -28,14 +28,14 @@
     "grunt": "^1.0.1",
     "grunt-coffee-jshint": "^2.0.0",
     "grunt-coffeelint": "0.0.16",
-    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-coffee": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-contrib-yuidoc": "^1.0.0",
     "grunt-mocha-test": "^0.13.3",
     "handlebars": "<5",
     "mocha": "^4.1.0",
-    "standard-version": "^4.3.0"
+    "standard-version": "^4.4.0"
   },
   "directories": {
     "doc": "dist/doc",
