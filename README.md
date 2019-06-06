@@ -239,7 +239,7 @@ See also the [examples](https://github.com/marviq/madlib-locale/tree/develop/exa
 See [CONTRIBUTING](./CONTRIBUTING.md).
 
 
-## ChangeLog
+## Changelog
 
 See [CHANGELOG](./CHANGELOG.md) for versions >`0.2.1`;  For older versions, refer to the
 [releases on GitHub](https://github.com/marviq/madlib-locale/releases?after=v0.3.0) for a detailed log of changes.
@@ -247,4 +247,4 @@ See [CHANGELOG](./CHANGELOG.md) for versions >`0.2.1`;  For older versions, refe
 
 ## License
 
-[BSD-3-Clause](LICENSE)
+[BSD-3-Clause](./LICENSE)

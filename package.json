@@ -13,29 +13,29 @@
     "madlib-console": "^0.1.4",
     "madlib-settings": "^0.1.7",
     "madlib-xhr": "^0.1.21",
-    "moment": ">=2.20.1 <3",
+    "moment": "^2.24.0",
     "node-polyglot": "<3",
     "q": "^1.5.1",
-    "underscore": "^1.8.3",
-    "underscore.string": "^3.3.4"
+    "underscore": "^1.9.1",
+    "underscore.string": "^3.3.5"
   },
   "description": "A `Handlebars` helper collection providing keyed dictionary substitution and simple localization.",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "chai": "^4.1.2",
-    "coffeescript": "^2.1.1",
-    "grunt": "^1.0.1",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "chai": "^4.2.0",
+    "coffeescript": "^2.4.1",
+    "grunt": "^1.0.4",
     "grunt-coffee-jshint": "^2.0.0",
     "grunt-coffeelint": "0.0.16",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-coffee": "^2.0.0",
-    "grunt-contrib-watch": "^1.0.0",
+    "grunt-contrib-clean": "^2.0.0",
+    "grunt-contrib-coffee": "^2.1.0",
+    "grunt-contrib-watch": "^1.1.0",
     "grunt-contrib-yuidoc": "^1.0.0",
     "grunt-mocha-test": "^0.13.3",
-    "handlebars": "<5",
-    "mocha": "^4.1.0",
-    "standard-version": "^4.3.0"
+    "handlebars": ">=4.1.2 <5",
+    "mocha": "^6.1.4",
+    "standard-version": "^6.0.1"
   },
   "directories": {
     "doc": "dist/doc",
@@ -61,7 +61,6 @@
     "internationalization",
     "l10n",
     "localization",
-    "marviq",
     "moment",
     "polyglot",
     "translate",
@@ -74,7 +73,9 @@
     "handlebars": "<5"
   },
   "private": false,
-  "publishConfig": {},
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marviq/madlib-locale.git"
@@ -82,12 +83,13 @@
   "scripts": {
     "build": "command -v grunt > /dev/null || { echo >&2 'It appears that \"grunt\" is not installed.  Consider running \"[sudo ]npm install -g grunt-cli\" first.'; exit ; } && grunt --no-color ${npm_config_debug+debug} ${npm_config_target+\"--target=${npm_config_target}\"}",
     "dist": "true",
+    "hotfix": "standard-version --message 'chore(hotfix): %s'",
     "prebuild": "rm -rf \"${npm_package_config_dist}\"",
     "predist": "npm run build",
     "prepublishOnly": "npm run dist",
-    "refresh": "set -x; npm prune && npm install && npm dedupe",
+    "refresh": "set -x; npm install && npm prune && npm dedupe",
     "release": "standard-version",
     "test": "command -v grunt > /dev/null || { echo >&2 'It appears that \"grunt\" is not installed.  Consider running \"[sudo ]npm install -g grunt-cli\" first.'; exit ; } && grunt test"
   },
-  "version": "0.4.3"
+  "version": "0.4.4"
 }

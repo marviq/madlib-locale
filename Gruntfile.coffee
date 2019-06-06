@@ -11,8 +11,8 @@ module.exports = ( grunt ) ->
         ##  ------------------------------------------------
 
         ##
-        ##  Contents of npm's 'package.json' file as '<%= npm.pkg.* %>'
-        ##  Installed dependencies of npm's 'package.json' file as '<%= npm.installed.* %>'
+        ##  Contents of npm's 'package.json' file as `<%= npm.pkg.* %>`
+        ##  Installed dependencies of npm's 'package.json' file as `<%= npm.installed.* %>`
         ##
 
         npm:
@@ -21,7 +21,7 @@ module.exports = ( grunt ) ->
 
 
         ##
-        ##  Local data as '<%= build.* %>'
+        ##  Local data as `<%= build.* %>`
         ##
 
         build:
@@ -123,7 +123,7 @@ module.exports = ( grunt ) ->
                 options:
                     transpile:
                         presets: [
-                                        'env'
+                                        '@babel/env'
                         ]
 
                 files: [
@@ -143,7 +143,7 @@ module.exports = ( grunt ) ->
                     sourceMap:          true
                     transpile:
                         presets: [
-                                        'env'
+                                        '@babel/env'
                         ]
 
                 files:                  '<%= coffee.lib_dist.files %>'
