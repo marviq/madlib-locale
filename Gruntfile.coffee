@@ -123,7 +123,7 @@ module.exports = ( grunt ) ->
                 options:
                     transpile:
                         presets: [
-                                        'env'
+                                        '@babel/env'
                         ]
 
                 files: [
@@ -143,7 +143,7 @@ module.exports = ( grunt ) ->
                     sourceMap:          true
                     transpile:
                         presets: [
-                                        'env'
+                                        '@babel/env'
                         ]
 
                 files:                  '<%= coffee.lib_dist.files %>'
