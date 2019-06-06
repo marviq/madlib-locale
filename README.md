@@ -247,4 +247,4 @@ See [CHANGELOG](./CHANGELOG.md) for versions >`0.2.1`;  For older versions, refe
 
 ## License
 
-[BSD-3-Clause](LICENSE)
+[BSD-3-Clause](./LICENSE)

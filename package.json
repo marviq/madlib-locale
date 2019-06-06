@@ -61,7 +61,6 @@
     "internationalization",
     "l10n",
     "localization",
-    "marviq",
     "moment",
     "polyglot",
     "translate",
@@ -74,7 +73,9 @@
     "handlebars": "<5"
   },
   "private": false,
-  "publishConfig": {},
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marviq/madlib-locale.git"
