@@ -1,6 +1,15 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.4.4](https://github.com/marviq/madlib-locale/compare/v0.4.3...v0.4.4) (2019-06-06)
+
+
+### Bug Fixes
+
+* **project:** address a security alert concerning our `handlebars` dependency ([249cf5a](https://github.com/marviq/madlib-locale/commit/249cf5a))
+
+
 
 <a name="0.4.3"></a>
 ## [0.4.3](https://github.com/marviq/madlib-locale/compare/v0.4.2...v0.4.3) (2018-01-09)
