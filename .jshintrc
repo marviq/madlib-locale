@@ -33,6 +33,7 @@
 ,   "immed":            true    //  *** Deprecation warning; about coding style, not correctness.
 ,   "indent":           4       //  *** Deprecation warning; about coding style, not correctnees.
 ,   "latedef":          "nofunc"//  Because you want to declare functions after they are used.
+,   "leanswitch":       true
 
 //  "max..."                    //  `max*` options have their own section, see below.
 
@@ -42,12 +43,14 @@
 ,   "noempty":          false   //  Because you do use empty blocks.  *** Deprecation warning; about coding style, not correctnees.
 ,   "nonbsp":           true
 ,   "nonew":            true
+,   "noreturnawait":    true
 
 ,   "plusplus":         false   //  Because++.  The documentation list this with the "relaxing" options, but is more appropriately put here.
 
 //  "predef"                    //  They have their own section, see below.
 
 ,   "quotmark":         "single"//  Because single quotes are easier; on the eye; to type.  *** Deprecation warning; about coding style, not correctnees.
+,   "regexpu":          true
 
 //  "shadow"                    //  Is more appropriately listed with the "relaxing" options.
 
