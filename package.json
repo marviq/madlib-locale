@@ -14,15 +14,15 @@
     "madlib-settings": "^0.1.7",
     "madlib-xhr": "^0.1.21",
     "moment": "^2.24.0",
-    "node-polyglot": "<3",
+    "node-polyglot": "^2.4.0",
     "q": "^1.5.1",
     "underscore": "^1.9.1",
     "underscore.string": "^3.3.5"
   },
   "description": "A `Handlebars` helper collection providing keyed dictionary substitution and simple localization.",
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
     "chai": "^4.2.0",
     "coffeescript": "^2.4.1",
     "grunt": "^1.0.4",
@@ -33,9 +33,9 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-contrib-yuidoc": "^1.0.0",
     "grunt-mocha-test": "^0.13.3",
-    "handlebars": ">=4.1.2 <5",
-    "mocha": "^6.1.4",
-    "standard-version": "^6.0.1"
+    "handlebars": "^4.5.3",
+    "mocha": "^6.2.2",
+    "standard-version": "^7.0.1"
   },
   "directories": {
     "doc": "dist/doc",
@@ -91,5 +91,5 @@
     "release": "standard-version",
     "test": "command -v grunt > /dev/null || { echo >&2 'It appears that \"grunt\" is not installed.  Consider running \"[sudo ]npm install -g grunt-cli\" first.'; exit ; } && grunt test"
   },
-  "version": "0.4.4"
+  "version": "0.4.5"
 }
