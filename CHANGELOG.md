@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.6](https://github.com/marviq/madlib-locale/compare/v0.4.5...v0.4.6) (2020-03-16)
+
 ### [0.4.5](https://github.com/marviq/madlib-locale/compare/v0.4.4...v0.4.5) (2019-12-27)
 
 ### [0.4.4](https://github.com/marviq/madlib-locale/compare/v0.4.3...v0.4.4) (2019-06-06)
